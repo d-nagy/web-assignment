@@ -10,7 +10,7 @@ const secret_token = "concertina";
 
 
 router.get('/', (req, res) => {
-    res.send('It works!');
+    res.render('login');
 });
 
 

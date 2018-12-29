@@ -1,0 +1,19 @@
+- var title = "Log In"
+
+doctype html
+html
+    head
+        include head.pug
+    body
+        div(class="container-fluid h-100")
+            div(class="row h-100")
+                div(class="col-md-7 border-right d-flex")
+                    h1(class="m-auto") Welcome
+                div(class="col text-center align-items-center d-flex")
+                    form(action="/login" method="POST" class="m-auto" style="width:50%")
+                        h2 Log In
+                        div(class="form-group")
+                            input(type="text" class="form-control" id="username" placeholder="Username")
+                        div(class="form-group")
+                            input(type="password" class="form-control" id="password" placeholder="Password")
+                        button(type="submit" class="btn btn-primary") Submit
