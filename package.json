@@ -1,0 +1,24 @@
+{
+  "name": "WebProgramming",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "watch": "nodemon ./start.js",
+    "start": "node ./start.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "pug": "^2.0.3"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "supertest": "^3.3.0"
+  }
+}
