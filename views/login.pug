@@ -1,19 +1,107 @@
-- var title = "Log In"
+- var title= "Log In"
 
 doctype html
 html
     head
         include head.pug
+        if signup
+            style. 
+                #login { display: none; }
+        else
+            style.
+                #signup { display: none; }
     body
         div(class="container-fluid h-100")
             div(class="row h-100")
                 div(class="col-md-7 border-right d-flex")
                     h1(class="m-auto") Welcome
-                div(class="col text-center align-items-center d-flex")
-                    form(action="/login" method="POST" class="m-auto" style="width:50%")
-                        h2 Log In
-                        div(class="form-group")
-                            input(type="text" class="form-control" id="username" placeholder="Username")
-                        div(class="form-group")
-                            input(type="password" class="form-control" id="password" placeholder="Password")
-                        button(type="submit" class="btn btn-primary") Submit
+
+                div(class="col align-items-center d-flex")
+                    div(id="login" class="card m-auto" style="width:50%")
+                        div(class="card-body")
+                            h2(class="card-title") Log In
+                            form(action="/login" method="POST" class="needs-validation" novalidate)
+                                input(type="hidden" name="action" value="login")
+
+                                div(class="form-group")
+                                    input(type="text" class="form-control" id="loginUsername" name="username" placeholder="Username" required)
+                                    div(class="invalid-feedback") Username required.
+                                
+                                div(class="form-group")
+                                    input(type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" required)
+                                    div(class="invalid-feedback") Password required.
+
+                                include flash.pug
+
+                                div(class="text-center")
+                                    button(type="submit" class="btn btn-success" style="width:50%") Log in
+                                    p(style="margin-top:10px").
+                                        Aren't a member yet?
+                                        #[button(type="button" id="signup_link" class="btn btn-link") Sign up!]
+                    
+                    div(id="signup" class="card m-auto" style="width:50%")
+                        div(class="card-body")
+                            h2(class="card-title") Sign up
+                            form(action="/login" method="POST" class="needs-validation" novalidate)
+                                input(type="hidden" name="action" value="signup")
+
+                                div(class="form-row")
+                                    div(class="form-group col-md-6")
+                                        input(type="text" class="form-control" id="signupForename" name="forename" placeholder="First Name" required)
+                                        div(class="invalid-feedback") First name required.
+
+                                    div(class="form-group col-md-6")
+                                        input(type="text" class="form-control" id="signupSurname" name="surname" placeholder="Surname" required)
+                                        div(class="invalid-feedback") Surname required.
+
+                                div(class="form-group")
+                                    input(type="text" class="form-control" id="signupUsername" name="username" placeholder="Username" required)
+                                    div(class="invalid-feedback") Username required.
+
+                                div(class="form-group")
+                                    input(type="password" class="form-control" id="signupPassword" name="password" placeholder="Password" required)
+                                    div(class="invalid-feedback") Password required.
+
+                                div(class="form-group")
+                                    input(type="password" class="form-control" id="signupConfirmPwd" name="confirm_password" placeholder="Confirm Password" required)
+                                    div(class="invalid-feedback") Password confirmation required.
+
+                                include flash.pug
+
+                                div(class="text-center")
+                                    button(type="submit" id="signup_button" class="btn btn-success" style="width:50%") Sign up
+                                    p(style="margin-top:10px").
+                                        Already a member?
+                                        #[button(type="button" id="login_link" class="btn btn-link") Log in]
+
+        script.
+            (function() {
+                window.addEventListener('load', function() {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                    });
+                }, false);
+            })();
+
+            $('#signup_link').click(function() {
+                $('form > div.alert').remove();
+                $('#login').fadeOut(100, function() {
+                    $('#signup').fadeIn(100);
+                });
+            });
+
+            $('#login_link').click(function() {
+                $('form > div.alert').remove();
+                $('#signup').fadeOut(100, function() {
+                    $('#login').fadeIn(100);
+                });
+            });
