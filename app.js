@@ -30,7 +30,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((username, done) => {
-    Person.getPerson(username, (err, person) => {
+    Person.getPerson(username, (err, status, person) => {
         done(err, person);
     })
 });
