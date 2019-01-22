@@ -1,0 +1,51 @@
+doctype html
+html
+    block vars
+    head
+        title= "DUCal - " + title
+        include head.pug
+        block head
+    body
+        div(class="wrapper")
+            nav(id="sidebar")
+                div(class="sidebar-header")
+                    h3 DUCal
+                
+                block sidebar-menu
+                    ul(class="list-unstyled components")
+                        p #{user.username}
+                        li(class="active")
+                            a(href="#") Home
+                        li
+                            a(href="#") Profile
+                        li
+                            a(href="#") About
+                
+                a(class="btn btn-light" id="logout-btn" href="/logout") Log Out
+
+            div(id="mainBody")
+                nav(class="navbar navbar-expand-lg navbar-light bg-light")
+                    div(class="container-fluid")
+                        button(type="button" id="sidebarCollapse" class="navbar-btn")
+                            span
+                            span
+                            span
+                block content
+        
+        include footer.pug
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js")
+
+        script.
+            $(document).ready(function() {
+                $('#sidebar').mCustomScrollbar({
+                    theme: "minimal"
+                });
+
+                $('#sidebarCollapse').click(function() {
+                    $(this).toggleClass('active');
+                    $('#sidebar, #content').toggleClass('active');
+                });
+            });
+        
+        block scripts

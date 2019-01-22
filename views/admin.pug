@@ -1,0 +1,159 @@
+extends layout.pug
+
+mixin controls
+    span(class="btn remove-btn" data-toggle="modal" data-target="#removeBlockModal")
+        i(class="fas fa-times")
+    span(class="drag-handle")
+        i(class="fas fa-grip-vertical")
+
+mixin exercise-single
+    div(class="board-item" id!=attributes.id style!=attributes.style)
+        div(class="board-item-content")
+            form(class="form-row block-form")
+                div(class="col-6")
+                    label(class="sr-only" for="inputExercise") Exercise
+                    select(class="custom-select mr-2" id="inputExercise")
+                        option(selected) Select exercise
+                        option(value="1") An exercise
+                        option(value="2") Another exercise
+                div(class="col-6")
+                    div(class="input-group")
+                        input(type="number" min="1" class="form-control " placeholder="Quantity")
+                        div(class="input-group-append btn-group btn-group-toggle" data-toggle="buttons")
+                            label(class="btn btn-outline-secondary active")
+                                input(type="radio" name="options" id="option1" autocomplete="off" checked)
+                                .
+                                    reps
+                            label(class="btn btn-outline-secondary")
+                                input(type="radio" name="options" id="option2" autocomplete="off")
+                                .
+                                    seconds
+            +controls
+
+mixin rest
+    div(class="board-item" id!=attributes.id style!=attributes.style)
+        div(class="board-item-content")
+            form(class="form-inline block-form")
+                h5(class="mr-3 my-auto") Rest
+                label(class="sr-only" for="inputRest") Rest
+                div(class="input-group")
+                    input(type="number" min="1" class="form-control" id="inputRest" placeholder="Duration")
+                    div(class="input-group-append")
+                        span(class="input-group-text") seconds
+            +controls
+
+mixin exercise-block
+    div(class="board-column" id!=attributes.id style!=attributes.style)
+        div(class="board-column-header")
+            form(class="form-row block-form")
+                div(class="col-6")
+                    label(class="sr-only" for="inputSectionTitle") Section Title
+                    input(type="text" class="form-control" id="inputSectionTitle" placeholder="Title")
+                div(class="col-6")
+                    label(class="sr-only" for="inputSectionRepetitions") Section Repetitions
+                    div(class="input-group")
+                        input(type="number" min="1" class="form-control" id="inputSectionRepetitions" placeholder="# of times to repeat")
+                        div(class="input-group-append")
+                            span(class="input-group-text") reps
+            +controls
+        div(class="board-column-body" style="border: solid transparent; border-width: 10px 20px;")
+            div(class="board-column-content" id!=attributes.id+'-content')
+                //- +exercise-single
+                //- +exercise-single
+            +add-block(true)
+
+mixin add-block(inColumn=false)
+    div(class="add-btn-container" )
+        button(type="button" class="btn btn-outline-dark add-btn")
+            i(class="fas fa-plus m-auto")
+
+        div(class="btn-group add-btn-group" role="group" style="display:none;")
+            button(type="button" class="btn btn-outline-dark add-ex") Exercise
+            if !inColumn
+                button(type="button" class="btn btn-outline-dark add-ex-block") Exercise Block
+            button(type="button" class="btn btn-outline-dark add-rest") Rest
+            button(type="button" class="btn btn-outline-dark")
+                i(class="fas fa-times")
+
+
+block vars
+    - var title = "Admin"
+
+block sidebar-menu
+    ul(class="list-unstyled components")
+        p Admin Panel
+        li(class="active")
+            a(href="#" id="workoutLink") Workouts
+        li
+            a(href="#" id="exerciseLink") Exercises
+        li
+            a(href="#" id="memberLink") Members
+        li
+            a(href="#" id="statLink") Stats
+    
+    ul(class="list-unstyled components")
+        p #{user.username}
+        li
+            a(href="#") Home
+        li
+            a(href="#") Profile
+        li
+            a(href="#") About
+
+block content
+    div(class="container-fluid" id="content")
+        div(class="row" id="workouts")
+            div(class="col-6")
+                h1(class="mainTitle") Create Workout
+                div(class="workout-creator")
+                    div(class="board")
+                        +exercise-single
+
+                        +exercise-block
+
+                        +rest
+
+                        +exercise-block
+
+                    +add-block
+            div(class="col-6")
+                h1(class="mainTitle") Search Workouts
+
+        div(class="row" id="exercises" style="display:none")
+            div(class="col-6")
+                h1(class="mainTitle") Add Exercise
+                
+            div(class="col-6")
+                h1(class="mainTitle") Search Exercises
+
+        div(class="row" id="members" style="display:none")
+            h1(class="mainTitle") Members
+
+        div(class="row" id="stats" style="display:none")
+            h1(class="mainTitle") Stats
+    
+    +exercise-single()(id="ex-template", style="display:none")
+    +exercise-block()(id="ex-block-template", style="display:none")
+    +rest()(id="rest-template", style="display:none")
+
+    div(class="modal fade" id="removeBlockModal" tabindex="-1" role="dialog" aria-labelledby="removeBlockModalTitle" aria-hidden="true")
+        div(class="modal-dialog modal-dialog-centered" role="document")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h5(class="modal-title" id="removeBlockModalTitle") Confirm delete
+                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true"). 
+                            &times;
+                div(class="modal-body").
+                    Are you sure you want to delete this item?
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-light" data-dismiss="modal") Cancel
+                    button(id="confirmRemove" type="button" class="btn btn-danger" data-dismiss="modal") Delete
+
+block scripts
+    script(src="https://unpkg.com/web-animations-js@2.3.1/web-animations.min.js")
+    script(src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js")
+    script(src="https://unpkg.com/muuri@0.7.1/dist/muuri.min.js")
+
+    script(src="/script.js")
+    script(src="/workouts.js")

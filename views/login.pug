@@ -1,9 +1,8 @@
-- var title= "Log In"
-
 doctype html
 html
     head
         include head.pug
+        title= "DUCal - Login"
         if signup
             style. 
                 #login { display: none; }
@@ -73,6 +72,8 @@ html
                                     p(style="margin-top:10px").
                                         Already a member?
                                         #[button(type="button" id="login_link" class="btn btn-link") Log in]
+
+        include footer.pug
 
         script.
             (function() {
