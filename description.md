@@ -15,7 +15,7 @@ tasks.
 - Set a daily workout for members to view.
 - Manage workouts:
   - Add exercises
-  - Approve member created exercises
+  - (Approve member created exercises) OPTIONAL
   - Add workouts as a sequence of exercises
   - View user ratings of workouts and exercises:
     - Difficulty
@@ -28,8 +28,9 @@ tasks.
 - View all workouts (with sorting and filtering too)
 - Rate workouts on the criteria mentioned above
 - Mark workouts as done
-- Add workouts from existing exercises
-- Add exercises (must be approved by admin)
+- (Add workouts from existing exercises) OPTIONAL
+- (Add exercises (must be approved by admin)) OPTIONAL
+- (View/edit profile with stats) OPTIONAL
 
 ## User representation
 
