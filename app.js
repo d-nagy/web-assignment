@@ -11,10 +11,10 @@ const LocalStrategy = require('passport-local').Strategy;
 const expressValidator = require('express-validator');
 
 
-const index = require('./routes/index');
+const index = require('./routes/index.route');
 
 
-const Person = require('./models/person');
+const Person = require('./models/person.model');
 
 
 const app = express();
