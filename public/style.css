@@ -194,10 +194,10 @@ a[data-toggle="collapse"] {
     #sidebarCollapse.active span:last-of-type {
         transform: rotate(-45deg) translate(1px, -1px);
     }
-    #content {
+    #mainBody {
         width: 100%;
     }
-    #content.active {
+    #mainBody.active {
         width: calc(100% - 250px);
     }
 }
