@@ -1,0 +1,35 @@
+div(class="col-6")
+    h1(class="mainTitle") Create Workout
+    div(class="content-col")
+        div(class="workout-creator")
+            label Workout Creator
+            div(class="board")
+                +exercise-block
+
+                +exercise-single
+
+                +rest
+
+                +exercise-block
+
+            +add-block
+
+        br
+
+        form(action="/workout" method="POST" id="addWorkoutForm" class="needs-validation custom-form" novalidate)
+            div(class="form-group")
+                label(for="wkTitleInput") Title
+                input(type="text" class="form-control" id="wkTitleInput" name="wkTitle" placeholder="Enter title" required)
+                div(class="invalid-feedback") Please give a title.
+
+            div(class="form-group")
+                label(for="wkDescriptionInput") Description
+                textarea(class="form-control" id="wkDescriptionInput" name="wkDescription" rows="3" placeholder="Give any extra info on how to perform the workout (Optional)")
+
+            div(class="alert alert-success" style="display:none")
+            div(class="alert alert-danger" style="display:none")
+
+            button(type="submit" class="btn btn-lg btn-block custom-submit") Submit
+
+div(class="col-6")
+    h1(class="mainTitle") Search Workouts

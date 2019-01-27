@@ -1,0 +1,51 @@
+div(class="col-6")
+    h1(class="mainTitle") Add Exercise
+    //- input(name='tags' class='some_class_name' placeholder='write some tags' value='css, html, javascript, css' autofocus data-blacklist='.NET,PHP')
+    
+    div(class="content-col")
+        form(action="/exercise" method="POST" id="addExerciseForm" class="needs-validation custom-form" novalidate)
+            div(class="form-row")
+                div(class="form-group col-md-6")
+                    label(for="exNameInput") Name
+                    input(type="text" class="form-control" id="exNameInput" name="exName" placeholder="Enter name" required)
+                    div(class="invalid-feedback") Please give a name.
+
+                
+                div(class="form-group col-md-6")
+                    label(for="exDifficultyRating") Difficulty
+                    div(class="rating" id="exDifficultyRating")
+                        span
+                            input(type="radio" name="exDifficulty" id="str5" value="5" required)
+                            label(for="str5")
+                                i(class="far fa-star")
+                        span
+                            input(type="radio" name="exDifficulty" id="str4" value="4" required)
+                            label(for="str4")
+                                i(class="far fa-star")
+                        span
+                            input(type="radio" name="exDifficulty" id="str3" value="3" required)
+                            label(for="str3")
+                                i(class="far fa-star")
+                        span
+                            input(type="radio" name="exDifficulty" id="str2" value="2" required)
+                            label(for="str2")
+                                i(class="far fa-star")
+                        span
+                            input(type="radio" name="exDifficulty" id="str1" value="1" required)
+                            label(for="str1")
+                                i(class="far fa-star")
+                        div(class="invalid-feedback") Please give a difficulty rating.
+
+            
+            div(class="form-group")
+                label(for="exDescriptionInput") Description
+                textarea(class="form-control" id="exDescriptionInput" name="exDescription" rows="3" placeholder="Give a description of how to perform the exercise" required)
+                div(class="invalid-feedback") Please provide a description.
+
+            div(class="alert alert-success" style="display:none")
+            div(class="alert alert-danger" style="display:none")
+
+            button(type="submit" class="btn btn-lg btn-block custom-submit") Submit
+
+div(class="col-6")
+    h1(class="mainTitle") Search Exercises

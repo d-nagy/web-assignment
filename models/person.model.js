@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 
-var people = require('../data/people.json')
+let people = require('../data/people.json')
 
 
 const getPeople = () => {

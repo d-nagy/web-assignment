@@ -85,6 +85,12 @@ function createColumnGrid(container) {
         // Let's keep the board grid up to date with the
         // dimensions changes of column grids.
         boardGrid.refreshItems().layout();
+    })
+    .on('receive', function () {
+        if (grid.getItems().length === 1) {
+            var $buttons = $(grid.getElement()).siblings('.add-btn-container').find('button');
+            $buttons.removeClass('btn-outline-danger').addClass('btn-outline-dark');
+        }
     });
 
     // Add the column grid reference to the column grids
@@ -171,6 +177,12 @@ boardGrid = new Muuri('.board', {
     columnGrids.forEach(function (grid) {
         grid.refreshItems();
     });
+})
+.on('receive', function () {
+    if (boardGrid.getItems().length === 1) {
+        var $buttons = $(boardGrid.getElement()).siblings('.add-btn-container').find('button');
+        $buttons.removeClass('btn-outline-danger').addClass('btn-outline-dark');
+    }
 });
 
 columnGrids.push(boardGrid);
@@ -184,6 +196,7 @@ $('.add-ex').click(function() {
     })[0];
     grid.add($ex[0]);
     grid.show($ex[0]);
+    $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
 });
 
 $('.add-ex-block').click(function() {
@@ -198,6 +211,7 @@ $('.add-ex-block').click(function() {
     $content = $exBlock.find('.board-column-content');
     $content.removeAttr('id');
     createColumnGrid($content[0]);
+    $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
 });
 
 $('.add-rest').click(function() {
@@ -209,6 +223,7 @@ $('.add-rest').click(function() {
     })[0];
     grid.add($rest[0]);
     grid.show($rest[0]);
+    $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
 });
 
 var itemToRemove;
@@ -225,5 +240,95 @@ $(document).on('shown.bs.modal', '#removeBlockModal', function(event) {
 
 $('#confirmRemove').click(function() {
     gridToRemoveFrom.remove(itemToRemove);
+    if ($(itemToRemove).hasClass('board-column')) {
+        var gridToRemove = columnGrids.filter(function (g) {
+            return itemToRemove.contains(g.getElement());
+        })[0];
+        var index = columnGrids.indexOf(gridToRemove);
+        if (index > -1) { columnGrids.splice(index, 1); }
+    }
     $(itemToRemove).remove();
 });
+
+function checkValidWorkout() {
+    var allSetsNotEmpty = true;
+
+    function checkSetNotEmpty(grid) {
+        var isEmpty = grid.getItems().length < 1;
+        if (isEmpty) {
+            allSetsNotEmpty = false;
+            var $buttons = $(grid.getElement()).siblings('.add-btn-container').find('button');
+            $buttons.removeClass('btn-outline-dark').addClass('btn-outline-danger');
+        }
+    }
+
+    columnGrids.forEach(checkSetNotEmpty);
+
+    var validForms = true;
+    $('.workout-creator form').each(function() {
+        var form = $(this)[0];
+        if (form.checkValidity() === false) {
+            form.classList.add('was-validated');
+            validForms = false;
+        }
+    });
+
+    if (!(allSetsNotEmpty && validForms)) { return false; }
+
+    return true;
+};
+
+function serializeWorkout() {
+    function serializeGrid(grid) {
+        var items = grid.getItems();
+        var json = [];
+
+        items.forEach(function(item) {
+            var $el = $(item.getElement());
+
+            if ($el.hasClass('exercise-single')) {
+                var ex = {
+                    type: 'exercise-single',
+                    exercise: $el.find('select[name=inputExercise]').val(),
+                    quantity: $el.find('input[name=quantity]').val(),
+                    units: $el.find('input:radio:checked').val()
+                };
+                json.push(ex);
+            } else if ($el.hasClass('rest')) {
+                var rest = {
+                    type: 'rest',
+                    duration: $el.find('input[name=inputRest]').val()
+                };
+                json.push(rest);
+            } else {
+                var gridToSerialize = columnGrids.filter(function (g) {
+                    return $el[0].contains(g.getElement());
+                })[0];
+
+                var block = {
+                    type: 'exercise-block',
+                    title: $el.find('input[name=sectionTitle]').val(),
+                    reps: $el.find('input[name=sectionReps]').val(),
+                    exercises: serializeGrid(gridToSerialize)
+                }
+
+                json.push(block);
+            }
+        });
+        return json;
+    };
+
+    return serializeGrid(boardGrid);
+};
+
+function clearWorkout() {
+    boardGrid.getItems().forEach(function(item) {
+        boardGrid.remove(item, {removeElements: true});
+    });
+
+    columnGrids.forEach(function(grid) {
+        if (grid !== boardGrid) {
+            grid.destroy(true);
+        }
+    });
+};

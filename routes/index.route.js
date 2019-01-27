@@ -4,15 +4,14 @@ const express = require('express');
 const auth = require('./auth.route');
 const admin = require('./admin.route');
 const people = require('./people.route');
+const exercise = require('./exercises.route');
+const workout = require('./workouts.route');
 
 
 const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    console.log('from within / route:')
-    console.log('req.user= ' + JSON.stringify(req.user));
-    console.log('\n');
     // console.log(req.session);
     if (req.isAuthenticated()) {
         // console.log(req.user);
@@ -29,6 +28,8 @@ router.get('/', (req, res) => {
 router.use('/', auth);
 router.use('/admin/', admin);
 router.use('/people/', people);
+router.use('/exercise/', exercise);
+router.use('/workout/', workout);
 
 
 module.exports = router;

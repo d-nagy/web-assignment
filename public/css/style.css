@@ -209,9 +209,9 @@ a[data-toggle="collapse"] {
 
 
 /* MUURI STUFF */
-.workout-creator {
+.content-col {
     margin-left: 1%;
-    background: #6d7fcc;
+    background: #7386D5;
     border: 20px solid transparent;
 }
 
@@ -343,4 +343,64 @@ a[data-toggle="collapse"] {
 .add-btn-group, .add-btn {
     width: 100%;
     height: 100%;
+}
+
+/* Workout creator */
+.workout-creator {
+    background-color: white;
+    padding: 20px;
+}
+
+/* Exercise and workout form */
+.custom-form {
+    padding: 20px;
+    background-color: white;
+}
+
+.custom-submit {
+    background-color: #7386D5;
+    color: white;
+}
+
+.custom-submit:hover {
+    background-color: #6d7fcc;
+}
+
+/* Star rating input */
+.rating {
+    position: absolute;
+    left: 5px;
+}
+
+.rating span { 
+    float:right; 
+    position:relative; 
+}
+
+.rating span input {
+    position:absolute;
+    top:0px;
+    left:0px;
+    opacity:0;
+}
+
+.rating span label {
+    color: inherit;
+}
+
+.rating span i {
+    display:inline-block;
+    width:30px;
+    height:30px;
+    text-align:center;
+    font-size:30px;
+    margin-right:4px;
+    line-height:30px;
+}
+
+.rating span:hover ~ span label,
+.rating span:hover label,
+.rating span.checked label,
+.rating span.checked ~ span label {
+    color:#ffdb4c;
 }

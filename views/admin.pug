@@ -1,80 +1,6 @@
 extends layout.pug
 
-mixin controls
-    span(class="btn remove-btn" data-toggle="modal" data-target="#removeBlockModal")
-        i(class="fas fa-times")
-    span(class="drag-handle")
-        i(class="fas fa-grip-vertical")
-
-mixin exercise-single
-    div(class="board-item" id!=attributes.id style!=attributes.style)
-        div(class="board-item-content")
-            form(class="form-row block-form")
-                div(class="col-6")
-                    label(class="sr-only" for="inputExercise") Exercise
-                    select(class="custom-select mr-2" id="inputExercise")
-                        option(selected) Select exercise
-                        option(value="1") An exercise
-                        option(value="2") Another exercise
-                div(class="col-6")
-                    div(class="input-group")
-                        input(type="number" min="1" class="form-control " placeholder="Quantity")
-                        div(class="input-group-append btn-group btn-group-toggle" data-toggle="buttons")
-                            label(class="btn btn-outline-secondary active")
-                                input(type="radio" name="options" id="option1" autocomplete="off" checked)
-                                .
-                                    reps
-                            label(class="btn btn-outline-secondary")
-                                input(type="radio" name="options" id="option2" autocomplete="off")
-                                .
-                                    seconds
-            +controls
-
-mixin rest
-    div(class="board-item" id!=attributes.id style!=attributes.style)
-        div(class="board-item-content")
-            form(class="form-inline block-form")
-                h5(class="mr-3 my-auto") Rest
-                label(class="sr-only" for="inputRest") Rest
-                div(class="input-group")
-                    input(type="number" min="1" class="form-control" id="inputRest" placeholder="Duration")
-                    div(class="input-group-append")
-                        span(class="input-group-text") seconds
-            +controls
-
-mixin exercise-block
-    div(class="board-column" id!=attributes.id style!=attributes.style)
-        div(class="board-column-header")
-            form(class="form-row block-form")
-                div(class="col-6")
-                    label(class="sr-only" for="inputSectionTitle") Section Title
-                    input(type="text" class="form-control" id="inputSectionTitle" placeholder="Title")
-                div(class="col-6")
-                    label(class="sr-only" for="inputSectionRepetitions") Section Repetitions
-                    div(class="input-group")
-                        input(type="number" min="1" class="form-control" id="inputSectionRepetitions" placeholder="# of times to repeat")
-                        div(class="input-group-append")
-                            span(class="input-group-text") reps
-            +controls
-        div(class="board-column-body" style="border: solid transparent; border-width: 10px 20px;")
-            div(class="board-column-content" id!=attributes.id+'-content')
-                //- +exercise-single
-                //- +exercise-single
-            +add-block(true)
-
-mixin add-block(inColumn=false)
-    div(class="add-btn-container" )
-        button(type="button" class="btn btn-outline-dark add-btn")
-            i(class="fas fa-plus m-auto")
-
-        div(class="btn-group add-btn-group" role="group" style="display:none;")
-            button(type="button" class="btn btn-outline-dark add-ex") Exercise
-            if !inColumn
-                button(type="button" class="btn btn-outline-dark add-ex-block") Exercise Block
-            button(type="button" class="btn btn-outline-dark add-rest") Rest
-            button(type="button" class="btn btn-outline-dark")
-                i(class="fas fa-times")
-
+include workout_creator.pug
 
 block vars
     - var title = "Admin"
@@ -103,28 +29,10 @@ block sidebar-menu
 block content
     div(class="container-fluid" id="content")
         div(class="row" id="workouts")
-            div(class="col-6")
-                h1(class="mainTitle") Create Workout
-                div(class="workout-creator")
-                    div(class="board")
-                        +exercise-single
-
-                        +exercise-block
-
-                        +rest
-
-                        +exercise-block
-
-                    +add-block
-            div(class="col-6")
-                h1(class="mainTitle") Search Workouts
+            include workouts.pug
 
         div(class="row" id="exercises" style="display:none")
-            div(class="col-6")
-                h1(class="mainTitle") Add Exercise
-                
-            div(class="col-6")
-                h1(class="mainTitle") Search Exercises
+            include exercises.pug
 
         div(class="row" id="members" style="display:none")
             h1(class="mainTitle") Members
@@ -155,5 +63,94 @@ block scripts
     script(src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js")
     script(src="https://unpkg.com/muuri@0.7.1/dist/muuri.min.js")
 
-    script(src="/script.js")
-    script(src="/workouts.js")
+    script(src="js/script.js")
+    script(src="js/workouts.js")
+    script(src="js/starRating.js")
+
+    //- script(src="tagify.min.js")
+    //- link(rel="stylesheet" href="/tagify.css")
+
+    script.
+        (function() {
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        switch (form.getAttribute('id')) {
+                            case 'addExerciseForm':
+                                if (form.checkValidity() !== false) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: form.getAttribute('action'),
+                                        data: $(form).serialize(),
+                                    }).done(function(data, textStatus, jqXHR) {
+                                        $(form).children('.alert-danger').hide();
+                                        $(form).children('.alert-success').html('Exercise added!').show().delay(5000).fadeOut(200);
+                                        $(form).find('input:text, textarea').val('');
+                                        $(form).find('input:radio').removeAttr('checked').removeAttr('selected');
+                                        $(form).find('.rating span').removeClass('checked selected');
+                                        $(form).find('.rating i').removeClass('fas').addClass('far');
+                                        form.classList.remove('was-validated');
+                                    }).fail(function(jqXHR, textStatus, err) {
+                                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                                    });
+                                } else {
+                                    form.classList.add('was-validated');
+                                    if (!$(form).find('input[name=exDifficulty]:checked').val()) {
+                                        $(form).find('.rating .invalid-feedback').show();
+                                    } else {
+                                        $(form).find('.rating .invalid-feedback').hide();
+                                    }
+                                }
+                                break;
+                            
+                            case 'addWorkoutForm':
+                                var formValid = form.checkValidity();
+                                if (formValid === false) {
+                                    form.classList.add('was-validated');
+                                }
+
+                                if (checkValidWorkout() !== false && formValid !== false) {
+                                    var formArray = $(form).serializeArray();
+                                    var formData = {};
+                                    for (var i = 0; i < formArray.length; i++){
+                                        formData[formArray[i]['name']] = formArray[i]['value'];
+                                    }
+
+                                    var postData = {
+                                        formData: JSON.stringify(formData),
+                                        wkData: JSON.stringify(serializeWorkout())
+                                    }
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: form.getAttribute('action'),
+                                        data: postData,
+                                    }).done(function(data, textStatus, jqXHR) {
+                                        $(form).children('.alert-danger').hide();
+                                        $(form).children('.alert-success').html('Workout added!').show().delay(5000).fadeOut(200);
+                                        $(form).find('input:text, textarea').val('');
+                                        clearWorkout();
+                                    }).fail(function(jqXHR, textStatus, err) {
+                                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                                    });
+                                }
+                                
+                                break;
+                        }
+                    }, false);
+                });
+            }, false);
+        })();
+
+        //- var input = document.querySelector('input[name=tags]'),
+        //- // init Tagify script on the above inputs
+        //- tagify = new Tagify(input, {
+        //-     whitelist : ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+        //- //  blacklist : [".NET", "PHP"] // <-- passed as an attribute in this demo
+        //- });
