@@ -21,7 +21,7 @@ tasks.
     - Difficulty
     - Enjoyment
     - Effectiveness
-    - Type (full-body, legs, shoulders etc.)
+    - (Type (full-body, legs, shoulders etc.)) OPTIONAL
 
 ## Ordinary member functions
 
@@ -45,10 +45,11 @@ Fields:
 
 Fields:
 
-- ID
 - Name
+- Slug (unique)
 - Description
-- Tags (referring to muscle groups the exercise uses)
+- Difficulty (out of 5)
+- (Tags (referring to muscle groups the exercise uses)) OPTIONAL
 
 ## Workout representation
 
