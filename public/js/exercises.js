@@ -8,10 +8,25 @@ function fetchExercises() {
         args.forEach(function(cb) {
             cb.call(this, data, textStatus, jqXHR);
         });
+    }).fail(function(jqXHR, textStatus, err) {
+        
     });
 };
 
-function populateResults(data, textStatus, jqXHR) {
+function deleteExercise(slug) {
+    $.ajax({
+        type: 'DELETE',
+        url: '/exercise/' + slug,
+    }).done(function(data, textStatus, jqXHR) {
+        fetchExercises(populateExerciseResults);
+    }).fail(function(jqXHR, textStatus, err) {
+        console.log(jqXHR);
+        console.log(textStatus);
+        console.log(err);
+    });
+};
+
+function populateExerciseResults(data, textStatus, jqXHR) {
     if (data.length === 0) {
         $('#noExercises').show();
     }
@@ -19,6 +34,7 @@ function populateResults(data, textStatus, jqXHR) {
     $.each(data, function(i, item) {
         $exCard = $('#ex-card-template').clone(true);
         $exCard.removeAttr('id');
+        $exCard.attr('data-slug', item.slug);
         $exCard.find('.card-title').html(item.name);
         $exCard.find('.card-text').html(item.description);
 
