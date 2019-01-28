@@ -226,30 +226,6 @@ $('.add-rest').click(function() {
     $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
 });
 
-var itemToRemove;
-var gridToRemoveFrom;
-
-$(document).on('shown.bs.modal', '#removeBlockModal', function(event) {
-    var triggerElement = event.relatedTarget;
-    itemToRemove = triggerElement.parentNode.parentNode;
-    gridToRemoveFrom = columnGrids.filter(function (g) {
-        return g.getItems(itemToRemove).length > 0;
-    })[0];
-    //- console.log(gridToRemoveFrom);
-});
-
-$('#confirmRemove').click(function() {
-    gridToRemoveFrom.remove(itemToRemove);
-    if ($(itemToRemove).hasClass('board-column')) {
-        var gridToRemove = columnGrids.filter(function (g) {
-            return itemToRemove.contains(g.getElement());
-        })[0];
-        var index = columnGrids.indexOf(gridToRemove);
-        if (index > -1) { columnGrids.splice(index, 1); }
-    }
-    $(itemToRemove).remove();
-});
-
 function checkValidWorkout() {
     var allSetsNotEmpty = true;
 
@@ -341,5 +317,48 @@ function populateExerciseList(data, textStatus, jqXHR) {
             value: item.slug,
             text: item.name
         }));
+    });
+};
+
+function fetchWorkouts() {
+    var args = Array.from(arguments);
+    $.ajax({
+        type: 'GET',
+        url: '/workout',
+        dataType: 'json'
+    }).done(function(data, textStatus, jqXHR) {
+        args.forEach(function(cb) {
+            cb.call(this, data, textStatus, jqXHR);
+        });
+    }).fail(function(jqXHR, textStatus, err) {
+        
+    });
+};
+
+function deleteWorkout(slug) {
+    $.ajax({
+        type: 'DELETE',
+        url: '/workout/' + slug,
+    }).done(function(data, textStatus, jqXHR) {
+        fetchExercises(populateWorkoutResults);
+    }).fail(function(jqXHR, textStatus, err) {
+        console.log(jqXHR);
+        console.log(textStatus);
+        console.log(err);
+    });
+};
+
+function populateWorkoutResults(data, textStatus, jqXHR) {
+    if (data.length === 0) {
+        $('#noWorkouts').show();
+    }
+
+    $.each(data, function(i, item) {
+        $wkCard = $('#workout-card-template').clone(true);
+        $wkCard.removeAttr('id');
+        $wkCard.attr('data-slug', item.slug);
+        
+        $('#workoutResults').append($wkCard);
+        $wkCard.show();
     });
 };

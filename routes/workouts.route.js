@@ -30,4 +30,14 @@ router.post('/', (req, res) => {
 });
 
 
+router.delete('/:slug', (req, res) => {
+    Workout.deleteWorkout(req.params.slug, (err, status) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).send();
+    });
+});
+
+
 module.exports = router;
