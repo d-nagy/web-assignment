@@ -332,3 +332,14 @@ function clearWorkout() {
         }
     });
 };
+
+function populateExerciseList(data, textStatus, jqXHR) {
+    $('.exercise-single select').children().not(':first-child').remove();
+
+    $.each(data, function(i, item) {
+        $('.exercise-single select').append($('<option>', {
+            value: item.slug,
+            text: item.name
+        }));
+    });
+};

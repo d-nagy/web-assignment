@@ -404,3 +404,27 @@ a[data-toggle="collapse"] {
 .rating span.checked ~ span label {
     color:#ffdb4c;
 }
+
+/* Exercise cards */
+#noExercises {
+    width: 200px;
+    margin: 50px auto;
+    color: white;
+}
+
+.exercise-card:not(:last-of-type) {
+    margin-bottom: 15px;
+}
+
+.exercise-card .card-title {
+    margin-bottom: .25rem;
+}
+
+.exercise-card .rating-static {
+    margin-bottom: .5rem;
+}
+
+.exercise-card .remove-btn {
+    float: right;
+    padding: 0;
+}

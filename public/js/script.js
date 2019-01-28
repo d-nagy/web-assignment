@@ -1,22 +1,3 @@
-var populateExercises = function() {
-    $.ajax({
-        type: 'GET',
-        url: '/exercise',
-        dataType: 'json'
-    }).done(function(data, textStatus, jqXHR) {
-        $('.exercise-single select').children().not(':first-child').remove();
-
-        $.each(data, function(i, item) {
-            $('.exercise-single select').append($('<option>', {
-                value: item.slug,
-                text: item.name
-            }));
-        });
-    });
-};
-
-populateExercises();
-
 $('.add-btn').click(function() {
     $(this).fadeToggle('fast');
     $(this).next('.add-btn-group').fadeToggle('fast');
@@ -37,7 +18,7 @@ $('.list-unstyled li').click(function() {
 $('#workoutLink').click(function() {
     $('#content > .row').hide();
     $('#workouts').show();
-    populateExercises();
+    fetchExercises(populateExerciseList);
 });
 
 $('#exerciseLink').click(function() {

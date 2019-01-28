@@ -1,3 +1,20 @@
+mixin exercise-card
+    div(class="card exercise-card" id!=attributes.id style!=attributes.style)
+        div(class="card-body")
+            span(class="btn remove-btn" data-toggle="modal" data-target="#")
+                i(class="fas fa-times")
+
+            h5(class="card-title") Name
+            div(class="rating-static")
+                <span class="far fa-star star1"></span>
+                <span class="far fa-star star2"></span>
+                <span class="far fa-star star3"></span>
+                <span class="far fa-star star4"></span>
+                <span class="far fa-star star5"></span>
+
+            p(class="card-text") Description
+
+
 div(class="col-6")
     h1(class="mainTitle") Add Exercise
     //- input(name='tags' class='some_class_name' placeholder='write some tags' value='css, html, javascript, css' autofocus data-blacklist='.NET,PHP')
@@ -49,3 +66,6 @@ div(class="col-6")
 
 div(class="col-6")
     h1(class="mainTitle") Search Exercises
+
+    div(class="content-col" id="exerciseResults")
+        h2(id="noExercises" style="display:none") No exercises
