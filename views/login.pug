@@ -20,8 +20,6 @@ html
                         div(class="card-body")
                             h2(class="card-title") Log In
                             form(action="/login" method="POST" class="needs-validation" novalidate)
-                                input(type="hidden" name="action" value="login")
-
                                 div(class="form-group")
                                     input(type="text" class="form-control" id="loginUsername" name="username" placeholder="Username" required)
                                     div(class="invalid-feedback") Username required.
@@ -41,9 +39,7 @@ html
                     div(id="signup" class="card m-auto" style="width:70%")
                         div(class="card-body")
                             h2(class="card-title") Sign up
-                            form(action="/login" method="POST" class="needs-validation" novalidate)
-                                input(type="hidden" name="action" value="signup")
-
+                            form(action="/signup" method="POST" id="signupForm" class="needs-validation" novalidate)
                                 div(class="form-row")
                                     div(class="form-group col-md-6")
                                         input(type="text" class="form-control" id="signupForename" name="forename" placeholder="First Name" required)
@@ -65,7 +61,8 @@ html
                                     input(type="password" class="form-control" id="signupConfirmPwd" name="confirm_password" placeholder="Confirm Password" required)
                                     div(class="invalid-feedback") Password confirmation required.
 
-                                include flash.pug
+                                div(class="alert alert-danger" style="display:none")
+                                div(class="alert alert-success" style="display:none")
 
                                 div(class="text-center")
                                     button(type="submit" id="signup_button" class="btn btn-success" style="width:50%") Sign up
@@ -94,15 +91,61 @@ html
             })();
 
             $('#signup_link').click(function() {
-                $('form > div.alert').remove();
+                $('form > div.alert').html('').hide();
+                $('form').removeClass('was-validated');
+                $('form').find('input[type=text], input[type=password]').val('');
                 $('#login').fadeOut(100, function() {
                     $('#signup').fadeIn(100);
                 });
             });
 
             $('#login_link').click(function() {
-                $('form > div.alert').remove();
+                $('form > div.alert').html('').hide();
+                $('form').removeClass('was-validated');
+                $('form').find('input[type=text], input[type=password]').val('');
                 $('#signup').fadeOut(100, function() {
                     $('#login').fadeIn(100);
                 });
             });
+
+            $('#signupForm').submit(function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var form = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/signup',
+                    data: form.serialize()
+                }).done(function(data, textStatus, jqXHR) {
+                    var data = {
+                        username: form.find('input[name=username]').val(),
+                        forename: form.find('input[name=forename]').val(),
+                        surname: form.find('input[name=surname]').val(),
+                        password: form.find('input[name=password]').val(),
+                        access_token: data.access_token
+                    };
+                    addUser(data);
+                }).fail(function(jqXHR, textStatus, err) {
+                    form.find('.alert-danger').html(jqXHR.responseText).show();
+                    form.find('input[type=password]').val('');
+                });
+            });
+        
+            function addUser(data) {
+                var form = $('#signupForm');
+                $.ajax({
+                    type: 'POST',
+                    url: '/people',
+                    data: data
+                }).done(function(data, textStatus, jqXHR) {
+                    form.removeClass('was-validated');
+                    form.find('input[type=text], input[type=password]').val('');
+                    form.find('.alert-success').html('You have signed up!').show();
+                }).fail(function(data, textStatus, jqXHR) {
+                    form.removeClass('was-validated');
+                    form.find('.alert-danger').html(jqXHR.responseText).show();
+                    form.find('input[type=password]').val('');
+                });
+            };

@@ -1,10 +1,8 @@
 const express = require('express');
 const Person = require('../models/person.model')
+const secret_token = require('../routes/auth.route').secret_token;
 
 const router = express.Router();
-
-
-const secret_token = "concertina";
 
 
 router.get('/', (req, res) => {

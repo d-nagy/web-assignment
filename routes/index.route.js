@@ -1,7 +1,7 @@
 const express = require('express');
 // const passport = require('passport');
 
-const auth = require('./auth.route');
+const auth = require('./auth.route').router;
 const admin = require('./admin.route');
 const people = require('./people.route');
 const exercise = require('./exercises.route');

@@ -9,6 +9,7 @@ const getPeople = () => {
 
 
 const getPerson = (username, done) => {
+    console.log(people);
     let person = people.find(p => p.username === username);
     if (person) {
         return done(null, 200, person);
@@ -24,10 +25,14 @@ const addPerson = (data, done) => {
 
     if (!data.password) {
         data.password = bcrypt.hashSync(data.username);
+    } else {
+        let hash = bcrypt.hashSync(data.password);
+        data.password = hash;
     }
 
     getPerson(data.username, (err, status, result) => {
         if (err) {
+            data.admin = false;
             people.push(data);
             return done(null, 200);
         } else {
