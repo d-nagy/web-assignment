@@ -406,7 +406,8 @@ a[data-toggle="collapse"] {
 }
 
 /* Exercise cards */
-#noExercises {
+#noExercises,
+#noWorkouts {
     width: 200px;
     margin: 50px auto;
     color: white;
@@ -420,11 +421,57 @@ a[data-toggle="collapse"] {
     margin-bottom: .25rem;
 }
 
-.exercise-card .rating-static {
-    margin-bottom: .5rem;
+.exercise-card .rating-static,
+.workout-card .rating-static {
+    float: left;
 }
 
-.exercise-card .remove-btn {
+.exercise-card .remove-btn,
+.workout-card .remove-btn {
     float: right;
     padding: 0;
+}
+
+/* Workout cards */
+.workoutDisplay {
+    box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
+    border-radius: 4px;
+    margin-bottom: 1em;
+}
+
+.workoutDisplay > .list-group {
+    padding: 10px;
+}
+
+.exCollapseButton i,
+.wkCollapseButton i {
+    margin-left: .5em;
+}
+
+.expand-btn {
+    padding: 0;
+    float: right;
+    margin-top: -.25em;
+    font-size: 1.5em;
+    height: 1em;
+}
+
+.fav-icon {
+    color: #ea1b51;
+    margin: auto .2em auto 1em;
+}
+
+.ratings {
+    display: flex;
+    height: 24px;
+    margin-top: 1em;
+}
+
+.ratings .rating-static,
+.ratings .badge {
+    margin: auto 0;
+}
+
+.ratings .badge {
+    padding: .2em;
 }

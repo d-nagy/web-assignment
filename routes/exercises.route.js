@@ -11,6 +11,16 @@ router.get('/', (req, res) => {
 });
 
 
+router.get('/:slug', (req, res) => {
+    Exercise.getExercise(req.params.slug, (err, status, result) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).json(result);
+    });
+});
+
+
 router.post('/', (req, res) => {
     console.log(req.body);
 

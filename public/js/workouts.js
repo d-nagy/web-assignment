@@ -265,7 +265,7 @@ function serializeWorkout() {
             if ($el.hasClass('exercise-single')) {
                 var ex = {
                     type: 'exercise-single',
-                    exercise: $el.find('select[name=inputExercise]').val(),
+                    slug: $el.find('select[name=inputExercise]').val(),
                     quantity: $el.find('input[name=quantity]').val(),
                     units: $el.find('input:radio:checked').val()
                 };
@@ -340,7 +340,7 @@ function deleteWorkout(slug) {
         type: 'DELETE',
         url: '/workout/' + slug,
     }).done(function(data, textStatus, jqXHR) {
-        fetchExercises(populateWorkoutResults);
+        fetchWorkouts(populateWorkoutResults);
     }).fail(function(jqXHR, textStatus, err) {
         console.log(jqXHR);
         console.log(textStatus);
@@ -348,17 +348,79 @@ function deleteWorkout(slug) {
     });
 };
 
+
 function populateWorkoutResults(data, textStatus, jqXHR) {
-    if (data.length === 0) {
+    var workouts = data.workouts;
+    var exercises = data.exercises;
+
+    if (workouts.length === 0) {
         $('#noWorkouts').show();
     }
 
-    $.each(data, function(i, item) {
+    $.each(workouts, function(i, wk) {
         $wkCard = $('#workout-card-template').clone(true);
         $wkCard.removeAttr('id');
-        $wkCard.attr('data-slug', item.slug);
-        
+        $wkCard.attr('data-slug', wk.slug);
+
+        $.each(wk.routine, function(i, item) {
+            switch (item.type) {
+                case "rest":
+                    $li = $('#rest-li-template').clone(true);
+                    $li.find('h6').html('Rest for ' + item.duration + ' seconds');
+                    break;
+                case "exercise-single":
+                    $li = $('#ex-single-li-template').clone(true);
+
+                    var ex = exercises.find(function(element) {
+                        return element.slug === item.slug; 
+                    });
+
+                    $li.find('h6').html(ex.name + ' &times ' + item.quantity + ' ' + item.units);
+                    $li.find('.card-title').html(ex.name);
+                    $li.find('.card-text').html(ex.description);
+                    setStarRating($li, ex.difficulty);
+                    break;
+                case "exercise-block":
+                    $li = $('#ex-block-li-template').clone(true);
+                    break;
+            }
+
+            $li.removeAttr('id');
+            $wkCard.find('.workoutDisplay > ul').append($li);
+            $li.show();
+        });
+
+        $wkCard.find('.card-title').html(wk.title);
+        $wkCard.find('.card-text').html(wk.description);
+        setStarRating($wkCard, wk.difficulty);
+        $wkCard.find('.fav-counter').html(wk.favourites);
+
+        $.each(exercises, function(i, ex) {
+            $card = $('#ex-card-li-template').clone(true);
+            $card.removeAttr('id');
+
+            $card.find('.card-title').html(ex.name);
+            $card.find('.card-text').html(ex.description);
+            setStarRating($card, ex.difficulty);
+
+            $wkCard.find('.exerciseDisplay').append($card);
+            $card.show();
+        });
+
+        var exDataTarget = "exerciseCollapse-" + i;
+        var wkDataTarget = "workoutCollapse-" + i;
+
+        $wkCard.find('.exCollapseButton').attr('data-target', "#" + exDataTarget);
+        $wkCard.find('.exerciseDisplay').attr('id', exDataTarget);
+
+        $wkCard.find('.wkCollapseButton').attr('data-target', "#" + wkDataTarget);
+        $wkCard.find('.workoutDisplay').attr('id', wkDataTarget);
+
         $('#workoutResults').append($wkCard);
         $wkCard.show();
     });
 };
+
+$('.collapseButton, .expand-btn').click(function() {
+    $(this).children('i').toggleClass('fa-angle-down').toggleClass('fa-angle-up');
+});

@@ -1,3 +1,27 @@
 [
-    
+    { "title": "Handstand hold workout",
+        "description": "",
+        "routine":
+         [ { "type": "exercise-single",
+             "slug": "handstand-hold",
+             "quantity": "60",
+             "units": "seconds" },
+           { "type": "rest", "duration": "60" },
+           { "type": "exercise-single",
+             "slug": "handstand-hold",
+             "quantity": "45",
+             "units": "seconds" },
+           { "type": "rest", "duration": "45" },
+           { "type": "exercise-single",
+             "slug": "handstand-hold",
+             "quantity": "30",
+             "units": "seconds" },
+           { "type": "rest", "duration": "30" },
+           { "type": "exercise-single",
+             "slug": "handstand-hold",
+             "quantity": "15",
+             "units": "seconds" } ],
+        "slug": "Handstand-hold-workout",
+        "difficulty": 0,
+        "favourites": 0 }
 ]

@@ -44,6 +44,11 @@ block content
     +exercise-block()(id="ex-block-template", style="display:none")
     +rest()(id="rest-template", style="display:none")
     +exercise-card()(id="ex-card-template", style="display:none")
+    +ex-card-li()(id="ex-card-li-template", style="display:none")
+    +workout-card()(id="workout-card-template", style="display:none")
+    +ex-single-li()(id="ex-single-li-template", style="display:none")
+    +ex-block-li()(id="ex-block-li-template", style="display:none")
+    +rest-li()(id="rest-li-template", style="display:none")
 
     div(class="modal fade" id="removeBlockModal" tabindex="-1" role="dialog" aria-labelledby="removeBlockModalTitle" aria-hidden="true")
         div(class="modal-dialog modal-dialog-centered" role="document")
@@ -150,7 +155,8 @@ block scripts
             }, false);
         })();
 
-        fetchExercises(populateExerciseList, populateExerciseResults, populateWorkoutResults);
+        fetchExercises(populateExerciseList, populateExerciseResults);
+        fetchWorkouts(populateWorkoutResults);
 
         //- var input = document.querySelector('input[name=tags]'),
         //- // init Tagify script on the above inputs

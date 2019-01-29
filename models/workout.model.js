@@ -27,6 +27,8 @@ const addWorkout = (data, done) => {
     getWorkout(slug, (err, status, result) => {
         if (err) {
             data['slug'] = slug;
+            data['difficulty'] = 0;
+            data['favourites'] = 0;
             workouts.push(data);
             return done(null, 200);
         } else {

@@ -61,7 +61,18 @@ $('#confirmRemove').click(function() {
         }
     } else if ($(itemToRemove).hasClass('exercise-card')) {
         deleteExercise($(itemToRemove).attr('data-slug'));
+    } else if ($(itemToRemove).hasClass('workout-card')) {
+        deleteWorkout($(itemToRemove).attr('data-slug'));
     };
 
     $(itemToRemove).remove();
 });
+
+function setStarRating(container, value) {
+    var colors = ['#37ce1f', '#b8ce1f', '#ffdb4c', '#ff923f', '#e41c1c'];
+    var color = colors[parseInt(value) - 1];
+    $star = container.find('.star' + value);
+    $stars = $star.prevUntil('.rating-static');
+    $star.removeClass('far').addClass('fas').css('color', color);
+    $stars.removeClass('far').addClass('fas').css('color', color);
+};

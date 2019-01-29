@@ -13,6 +13,22 @@ function fetchExercises() {
     });
 };
 
+function fetchExerciseBySlug(slug) {
+    var args = Array.from(arguments);
+    var slug = args[0];
+    var cbs = args.slice(1);
+    $.ajax({
+        type: 'GET',
+        url: '/exercise/' + slug
+    }).done(function(data, textStatus, jqXHR) {
+        cbs.forEach(function(cb) {
+            cb.call(this, data, textStatus, jqXHR);
+        });
+    }).fail(function(jqXHR, textStatus, err) {
+        
+    });
+};
+
 function deleteExercise(slug) {
     $.ajax({
         type: 'DELETE',
@@ -38,12 +54,14 @@ function populateExerciseResults(data, textStatus, jqXHR) {
         $exCard.find('.card-title').html(item.name);
         $exCard.find('.card-text').html(item.description);
 
-        var colors = ['#37ce1f', '#b8ce1f', '#ffdb4c', '#ff923f', '#e41c1c'];
-        var color = colors[parseInt(item.difficulty) - 1];
-        $star = $exCard.find('.star' + item.difficulty);
-        $stars = $star.prevUntil('.rating-static');
-        $star.removeClass('far').addClass('fas').css('color', color);
-        $stars.removeClass('far').addClass('fas').css('color', color);
+        // var colors = ['#37ce1f', '#b8ce1f', '#ffdb4c', '#ff923f', '#e41c1c'];
+        // var color = colors[parseInt(item.difficulty) - 1];
+        // $star = $exCard.find('.star' + item.difficulty);
+        // $stars = $star.prevUntil('.rating-static');
+        // $star.removeClass('far').addClass('fas').css('color', color);
+        // $stars.removeClass('far').addClass('fas').css('color', color);
+
+        setStarRating($exCard, item.difficulty);
         
         $('#exerciseResults').append($exCard);
         $exCard.show();
