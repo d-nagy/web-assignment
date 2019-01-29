@@ -8,6 +8,9 @@ html
     body
         div(class="wrapper")
             nav(id="sidebar")
+                div(id="dismiss")
+                    i(class="fas fa-arrow-left")
+
                 div(class="sidebar-header")
                     h3 DUCal
                 
@@ -23,13 +26,14 @@ html
                 
                 a(class="btn btn-light" id="logout-btn" href="/logout") Log Out
 
-            div(id="mainBody")
-                nav(class="navbar navbar-expand-lg navbar-light bg-light")
+            div(class="overlay")
+
+            nav(class="navbar navbar-expand-lg navbar-light bg-light")
                     div(class="container-fluid")
-                        button(type="button" id="sidebarCollapse" class="navbar-btn")
-                            span
-                            span
-                            span
+                        button(type="button" id="sidebarCollapse" class="btn")
+                            i(class="fas fa-bars")
+
+            div(id="mainBody")
                 block content
         
         include footer.pug
@@ -42,9 +46,19 @@ html
                     theme: "minimal"
                 });
 
+                $('#dismiss, .overlay').click(function () {
+                    // hide sidebar
+                    $('#sidebar').removeClass('active');
+                    // hide overlay
+                    $('.overlay').removeClass('active');
+                });
+
                 $('#sidebarCollapse').click(function() {
-                    $(this).toggleClass('active');
-                    $('#sidebar, #mainBody').toggleClass('active');
+                    $('#sidebar').addClass('active');
+                    // fade in the overlay
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
                 });
             });
         

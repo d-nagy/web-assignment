@@ -26,8 +26,7 @@ a, a:hover, a:focus {
 }
 
 .wrapper {
-    display: flex;
-    width: 100%;
+    display: block;
 }
 
 .navbar-btn {
@@ -37,19 +36,23 @@ a, a:hover, a:focus {
 }
 
 .navbar {
+    position: fixed;
+    width: 100%;
     padding: 15px 10px;
     background: #fff;
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 11;
 }
 
 #sidebar {
-    width: 250px;
+    min-width: 15em;
+    max-width: 15em;
     position: fixed;
     top: 0;
-    left: 0;
+    left: -15em;
     height: 100vh;
     z-index: 999;
     background: #7386D5;
@@ -58,27 +61,27 @@ a, a:hover, a:focus {
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
+    padding: 1em;
     background: #6d7fcc;
-    height: 110px;
+    height: 7em;
 }
 
 #sidebar .sidebar-header > h3 {
-    padding: 20px 0;
+    padding: 1em 0;
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
+    padding: 1em 0;
     border-bottom: 1px solid #47748B;
 }
 
 #sidebar ul p {
     color: #fff;
-    padding: 10px;
+    padding: .5em;
 }
 
 #sidebar ul li a {
-    padding: 10px;
+    padding: .5em;
     font-size: 1.1em;
     display: block;
 }
@@ -95,110 +98,77 @@ a, a:hover, a:focus {
 
 ul ul a {
     font-size: 0.9em !important;
-    padding-left: 30px !important;
+    padding-left: 1.2em !important;
     background: #6d7fcc;
 }
 
 #sidebar.active {
-    margin-left: -250px;
-}
-
-a[data-toggle="collapse"] {
-    position: relative;
-}
-
-.dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-}
-
-#sidebarCollapse {
-    width: 40px;
-    height: 40px;
-    background: #f5f5f5;
-    cursor: pointer;
-}
-
-#sidebarCollapse span {
-    width: 80%;
-    height: 2px;
-    margin: 0 auto;
-    display: block;
-    background: #555;
-    transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
-}
-
-#sidebarCollapse span:first-of-type {
-    transform: rotate(45deg) translate(2px, 2px);
-}
-
-#sidebarCollapse span:nth-of-type(2) {
-    opacity: 0;
-}
-
-#sidebarCollapse span:last-of-type {
-    transform: rotate(-45deg) translate(1px, -1px);
-}
-
-#sidebarCollapse.active span {
-    transform: none;
-    opacity: 1;
-    margin: 5px auto;
+    left: 0;
 }
 
 #logout-btn {
-    width: 200px;
-    margin: 10px 25px;
+    width: 10em;
+    margin: .5em 2.5em;
 }
 
 #mainBody {
-    width: calc(100% - 250px);
-    padding: 20px;
+    width: 100%;
+    padding: 1em;
     min-height: 100vh;
     transition: all 0.3s;
     position: absolute;
-    top: 0;
+    top: 6em;
     right: 0;
+    z-index: 10;
 }
 
-#mainBody.active {
-    width: 100%;
+.overlay {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+    opacity: 0;
+}
+
+.overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+#dismiss {
+    display: flex;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    background: #7386D5;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#dismiss i {
+    margin: auto;
+}
+
+#sidebarCollapse i {
+    font-size: 1.5em;
 }
 
 @media (max-width: 768px) {
-    #sidebar {
-        margin-left: -250px;
+    /* #sidebar {
+        margin-left: -15em;
     }
     #sidebar.active {
         margin-left: 0;
-    }
-    #sidebarCollapse span:first-of-type,
-    #sidebarCollapse span:nth-of-type(2),
-    #sidebarCollapse span:last-of-type {
-        transform: none;
-        opacity: 1;
-        margin: 5px auto;
-    }
-    #sidebarCollapse.active span {
-        margin: 0 auto;
-    }
-    #sidebarCollapse.active span:first-of-type {
-        transform: rotate(45deg) translate(2px, 2px);
-    }
-    #sidebarCollapse.active span:nth-of-type(2) {
-        opacity: 0;
-    }
-    #sidebarCollapse.active span:last-of-type {
-        transform: rotate(-45deg) translate(1px, -1px);
-    }
-    #mainBody {
-        width: 100%;
-    }
-    #mainBody.active {
-        width: calc(100% - 250px);
+    } */
+
+    .main-col {
+        padding: 0;
     }
 }
 
@@ -212,7 +182,8 @@ a[data-toggle="collapse"] {
 .content-col {
     margin-left: 1%;
     background: #7386D5;
-    border: 20px solid transparent;
+    /* border: 20px solid transparent; */
+    padding: 2%;
 }
 
 .board {
@@ -246,7 +217,6 @@ a[data-toggle="collapse"] {
     position: relative;
     background: #fff;
     border-radius: 4px;
-    font-size: 17px;
     -webkit-box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
     box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
     display: flex;
@@ -260,7 +230,6 @@ a[data-toggle="collapse"] {
 
 .board-column-content {
     position: relative;
-    /* min-height: 80px; */
 }
 
 .board-item {
@@ -292,7 +261,7 @@ a[data-toggle="collapse"] {
 }
 
 .block-form {
-    margin: 20px 0 20px 20px;
+    margin: 1em 0 1em 1em;
 }
 
 .drag-handle, .remove-btn {
@@ -303,12 +272,12 @@ a[data-toggle="collapse"] {
 }
 
 .drag-handle {
-    padding: 20px;
+    padding: 1em;
 }
 
 .remove-btn {
     margin-left: auto;
-    padding: 10px;
+    padding: .5em;
 }
 
 .remove-btn:hover {
@@ -316,7 +285,7 @@ a[data-toggle="collapse"] {
 }
 
 .add-btn-container {
-    margin: 15px 0;
+    margin: .75em 0;
     width: 100%;
     min-height: 60px;
     position: relative;
@@ -328,7 +297,7 @@ a[data-toggle="collapse"] {
 
 .add-btn {
     display: flex;
-    padding: 15px 0;
+    padding: .75em 0;
 }
 
 .add-btn-group > button, .add-btn {
@@ -348,12 +317,12 @@ a[data-toggle="collapse"] {
 /* Workout creator */
 .workout-creator {
     background-color: white;
-    padding: 20px;
+    padding: 1em;
 }
 
 /* Exercise and workout form */
 .custom-form {
-    padding: 20px;
+    padding: 1em;
     background-color: white;
 }
 
@@ -379,8 +348,8 @@ a[data-toggle="collapse"] {
 
 .rating span input {
     position:absolute;
-    top:0px;
-    left:0px;
+    top: 0;
+    left: 0;
     opacity:0;
 }
 
@@ -390,12 +359,12 @@ a[data-toggle="collapse"] {
 
 .rating span i {
     display:inline-block;
-    width:30px;
-    height:30px;
-    text-align:center;
-    font-size:30px;
-    margin-right:4px;
-    line-height:30px;
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    font-size: 1.5em;
+    margin-right: 4px;
+    line-height: 1.5em;
 }
 
 .rating span:hover ~ span label,
@@ -408,13 +377,13 @@ a[data-toggle="collapse"] {
 /* Exercise cards */
 #noExercises,
 #noWorkouts {
-    width: 200px;
-    margin: 50px auto;
+    width: 10em;
+    margin: 3em auto;
     color: white;
 }
 
 .exercise-card:not(:last-of-type) {
-    margin-bottom: 15px;
+    margin-bottom: .75em;
 }
 
 .exercise-card .card-title {
