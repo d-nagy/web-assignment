@@ -26,12 +26,12 @@ router.get('/:username', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    if (req.get('access_token') === secret_token) {
+    if (req.body.access_token === secret_token) {
         let person = {
-            username: req.get('username'),
-            forename: req.get('forename'),
-            surname: req.get('surname'),
-            password: req.get('password')
+            username: req.body.username,
+            forename: req.body.forename,
+            surname: req.body.surname,
+            password: req.body.password
         };
         Person.addPerson(person, (err, status) => {
             if (err) {
