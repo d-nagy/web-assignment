@@ -9,7 +9,7 @@ const getPeople = () => {
 
 
 const getPerson = (username, done) => {
-    console.log(people);
+    // console.log(people);
     let person = people.find(p => p.username === username);
     if (person) {
         return done(null, 200, person);
