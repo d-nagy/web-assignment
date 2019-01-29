@@ -421,6 +421,6 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
     });
 };
 
-$('.collapseButton, .expand-btn').click(function() {
+$('.exCollapseButton, .wkCollapseButton').click(function() {
     $(this).children('i').toggleClass('fa-angle-down').toggleClass('fa-angle-up');
 });
