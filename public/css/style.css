@@ -63,6 +63,7 @@ a, a:hover, a:focus {
     background: #7386D5;
     color: #fff;
     transition: all 0.3s;
+    overflow: auto;
 }
 
 #sidebar .sidebar-header {
@@ -78,6 +79,7 @@ a, a:hover, a:focus {
 #sidebar ul.components {
     padding: 1em 0;
     border-bottom: 1px solid #47748B;
+    margin-bottom: 0;
 }
 
 #sidebar ul p {
@@ -113,13 +115,13 @@ ul ul a {
 
 #logout-btn {
     width: 10em;
-    margin: .5em 2.5em;
+    margin: 1em 2.5em;
 }
 
 #mainBody {
     width: 100%;
     padding: 1em;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     transition: all 0.3s;
     position: absolute;
     top: 6em;
