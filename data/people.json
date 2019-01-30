@@ -8,9 +8,10 @@
     },
     {
         "username": "admin",
-        "forename": "",
-        "surname": "",
+        "forename": "Tim",
+        "surname": "Smith",
         "password": "$2a$10$WOGEK3fWar907Ph/TdMHee2IPNydnokrQ7YgM3rx1CknDoYshSpe2",
-        "admin": true
+        "admin": true,
+        "role": "President"
     }
 ]

@@ -1,0 +1,45 @@
+mixin exec-card
+    div(class="card exec-card" id!=attributes.id style!=attributes.style)
+        i(class="fas fa-user-circle profilePic")
+        div(class="card-body")
+            h5(class="card-title") Name
+            h6(class="card-subtitle mb-2 text-muted") Role
+
+            a(href="#" class="card-link userStatsCollapseButton" data-toggle="collapse" data-target="#userStatsCollapse-slug") More
+                i(class="fa fa-angle-down")
+
+            div(class="collapse" id="userStatsCollapse-slug")
+                dl(class="row")
+                    dt(class="col-sm-9") Exercises created
+                    dd(class="col-sm-3 exCreated") 0
+
+                    dt(class="col-sm-9") Workouts created
+                    dd(class="col-sm-3 wkCreated") 0
+
+                    dt(class="col-sm-9") Workouts completed
+                    dd(class="col-sm-3 wkComplete") 0
+
+                    dt(class="col-sm-9") Daily streak
+                    dd(class="col-sm-3 dailyStreak") 0
+
+            
+
+
+div(class="main-col w-100")
+    h2(class="mainTitle") Members
+    
+    div(class="row" id="memberNumbers")
+        p(class="lead col-md-3" id="numMembers")
+            span(class="bigNumber") 0 
+            .
+                ordinary members
+        
+        p(class="lead" id="numExec")
+            span(class="bigNumber") 0 
+            .
+                executive members
+
+    div(class="row" id="execCards")
+    
+    div(class="row" id="userCards")
+        

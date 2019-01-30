@@ -12,8 +12,8 @@ $('.add-btn-group > button').click(function() {
 $('.list-unstyled li').click(function() {
     $('.list-unstyled li.active').removeClass('active');
     $(this).addClass('active');
+    $("#dismiss").click();
 });
-
 
 $('#workoutLink').click(function() {
     $('#content > .row').hide();
@@ -76,3 +76,7 @@ function setStarRating(container, value) {
     $star.removeClass('far').addClass('fas').css('color', color);
     $stars.removeClass('far').addClass('fas').css('color', color);
 };
+
+$('.exCollapseButton, .wkCollapseButton, .userStatsCollapseButton').click(function() {
+    $(this).children('i').toggleClass('fa-angle-down').toggleClass('fa-angle-up');
+});

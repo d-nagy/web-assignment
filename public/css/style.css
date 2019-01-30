@@ -16,7 +16,7 @@ p {
     font-size: 1.1em;
     font-weight: 400;
     line-height: 1.7em;
-    color: #999;
+    /* color: #999; */
 }
 
 a, a:hover, a:focus {
@@ -91,7 +91,7 @@ a, a:hover, a:focus {
     background: #fff;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+#sidebar ul li.active > a {
     color: #fff;
     background: #6d7fcc;
 }
@@ -413,7 +413,8 @@ ul ul a {
 }
 
 .exCollapseButton i,
-.wkCollapseButton i {
+.wkCollapseButton i,
+.userStatsCollapseButton i {
     margin-left: .5em;
 }
 
@@ -448,4 +449,43 @@ ul ul a {
 /* Main columns */
 .main-col {
     margin-bottom: 3em;
+}
+
+/* Members page */
+#memberNumbers {
+    margin-left: 0;
+    margin-top: 1em;
+}
+
+.bigNumber {
+    font-size: 2em;
+}
+
+.profilePic {
+    margin: 15px auto 0 auto;
+    font-size: 8em;
+    color: #7386D5;
+}
+
+.exec-card {
+    width: 16rem;
+    float: left;
+    margin-top: 1em;
+}
+
+.exec-card:not(:last-of-type) {
+    margin-right: 1em;
+}
+
+.card-row {
+    padding: 15px;
+}
+
+dl.row {
+    margin-top: .5em;
+    margin-bottom: 0;
+}
+
+#execCards, #userCards {
+    margin-left: 15px;
 }

@@ -420,7 +420,3 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $wkCard.show();
     });
 };
-
-$('.exCollapseButton, .wkCollapseButton').click(function() {
-    $(this).children('i').toggleClass('fa-angle-down').toggleClass('fa-angle-up');
-});

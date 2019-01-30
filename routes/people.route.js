@@ -9,6 +9,9 @@ router.get('/', (req, res) => {
     res.status(200);
     res.contentType('application/json');
     let people = Person.getPeople();
+    for (let person, i = 0; person = people[i++];) {
+        delete person.password;
+    }
     res.send(people);
 });
 
@@ -17,6 +20,7 @@ router.get('/:username', (req, res) => {
         if (err) {
             res.status(status).send(err.message);
         } else {
+            delete result.password;
             res.contentType('application/json');
             res.status(status).send(result);
         }
