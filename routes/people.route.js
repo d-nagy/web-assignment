@@ -9,10 +9,19 @@ router.get('/', (req, res) => {
     res.status(200);
     res.contentType('application/json');
     let people = Person.getPeople();
+    let peopleNoPasswords = []
+    
     for (let person, i = 0; person = people[i++];) {
-        delete person.password;
+        let personNoPassword = Object.keys(person).reduce((object, key) => {
+            if (key !== 'password') {
+                object[key] = person[key];
+            }
+            return object;
+        }, {});
+        peopleNoPasswords.push(personNoPassword);
     }
-    res.send(people);
+
+    res.send(peopleNoPasswords);
 });
 
 router.get('/:username', (req, res) => {
@@ -20,9 +29,14 @@ router.get('/:username', (req, res) => {
         if (err) {
             res.status(status).send(err.message);
         } else {
-            delete result.password;
+            let personNoPassword = Object.keys(result).reduce((object, key) => {
+                if (key !== 'password') {
+                    object[key] = result[key];
+                }
+                return object;
+            }, {});
             res.contentType('application/json');
-            res.status(status).send(result);
+            res.status(status).send(personNoPassword);
         }
     });
 });

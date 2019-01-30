@@ -25,6 +25,11 @@ a, a:hover, a:focus {
     transition: all 0.3s;
 }
 
+#login, #signup {
+    width: 70%;
+    max-width: 32em;
+}
+
 .wrapper {
     display: block;
 }
