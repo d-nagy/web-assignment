@@ -22,16 +22,13 @@ mixin exec-card(level=0)
             h6(class="card-subtitle mb-2 text-muted") Role
 
             dl(class="row")
-                dt(class="col-sm-9") Exercises created
-                dd(class="col-sm-3 exCreated") 0
-
                 dt(class="col-sm-9") Workouts created
                 dd(class="col-sm-3 wkCreated") 0
 
-                dt(class="col-sm-9") Workouts completed
+                dt(class="col-sm-9") Total workouts completed
                 dd(class="col-sm-3 wkComplete") 0
 
-                dt(class="col-sm-9") Daily streak
+                dt(class="col-sm-9") Daily workouts completed
                 dd(class="col-sm-3 dailyStreak") 0
         if level > 1
             div(class="card-footer text-center")
@@ -168,3 +165,5 @@ mixin workout-card(admin=true)
 
                 i(class="fas fa-heart fav-icon")
                 span(class="badge badge-pill badge-light fav-counter") 0
+
+            p(class="workoutAuthor") Author

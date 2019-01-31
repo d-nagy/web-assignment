@@ -10,7 +10,7 @@ function populateMemberResults() {
         $.each(data, function(i, member) {
             var name = member.forename + ' ' + member.surname;
             var wk_completed = member.wk_completed;
-            var streak = member.streak;
+            var daily = member.daily_completed;
             if (member.admin === true) {
                 $card = $('#exec-card-template').clone(true);
                 $card.removeAttr('id');
@@ -19,10 +19,9 @@ function populateMemberResults() {
                 $card.find('.card-subtitle').html(member.role);
 
                 $card.find('.wkComplete').html(wk_completed);
-                $card.find('.dailyStreak').html(streak);
+                $card.find('.dailyStreak').html(daily);
                 $card.find('.wkCreated').html(member.wk_created);
-                $card.find('.exCreated').html(member.ex_created);
-                
+     
                 if (member.level > 1) {
                     $card.find('.card-footer').remove();
                 }
@@ -40,12 +39,12 @@ function populateMemberResults() {
                 $tdCompleted = $(document.createElement('td'));
                 $tdCompleted.html(wk_completed);
                 
-                $tdStreak = $(document.createElement('td'));
-                $tdStreak.html(streak);
+                $tdDaily = $(document.createElement('td'));
+                $tdDaily.html(daily);
                 
                 $tr.append($tdName);
                 $tr.append($tdCompleted);
-                $tr.append($tdStreak);
+                $tr.append($tdDaily);
 
                 $promote = $(document.createElement('button'));
                 $promote.addClass('btn btn-primary');

@@ -7,7 +7,7 @@
         "admin": false,
         "level": 0,
         "wk_completed": 3,
-        "streak": 2
+        "daily_completed": 2
     },
     {
         "username": "admin",
@@ -18,8 +18,7 @@
         "level": 2,
         "role": "President",
         "wk_created": 4,
-        "ex_created": 2,
         "wk_completed": 6,
-        "streak": 5
+        "daily_completed": 5
     }
 ]
