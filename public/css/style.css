@@ -440,7 +440,7 @@ ul ul a {
 
 /* Exercise cards */
 #noExercises,
-#noWorkouts {
+#noWorkouts, {
     width: 10em;
     margin: 3em auto;
     color: white;

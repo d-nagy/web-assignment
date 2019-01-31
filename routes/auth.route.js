@@ -14,6 +14,7 @@ const secret_token = 'concertina';
 router.post('/login', (req, res) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
+            console.log('Error has occured');
             req.flash('error', err.message);
             return res.redirect('/login');
         }

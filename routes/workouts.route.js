@@ -2,12 +2,37 @@ const express = require('express');
 
 const Workout = require('../models/workout.model');
 const Exercise = require('../models/exercise.model');
+const Rating = require('../models/ratings.model');
 
 const router = express.Router();
 
 
 router.get('/', (req, res) => {
     let workouts = Workout.getWorkouts();
+    let ratings = Rating.getRatingsByUsername(req.user.username);
+    let favourites = Rating.getFavouritesByUsername(req.user.username);
+
+    let workoutsWithRatings = []
+
+    workouts.forEach(workout => {
+        let hasRating = ratings.find(r => r.slug === workout.slug);
+        let hasFavourite = favourites.find(f => f.slug === workout.slug);
+
+        let workoutWithRatings = Object.keys(workout).reduce((object, key) => {
+            object[key] = workout[key];
+            return object;
+        }, {});
+        
+        if (hasRating) {
+            workoutWithRatings.rating = hasRating.rating;
+        }
+
+        if (hasFavourite) {
+            workoutWithRatings.favourite = true;
+        }
+
+        workoutsWithRatings.push(workoutWithRatings);
+    });
     
     let lookup = {};
     let exercises = []
@@ -39,7 +64,7 @@ router.get('/', (req, res) => {
     }
 
     let data = {
-        workouts: workouts,
+        workouts: workoutsWithRatings,
         exercises: exercises
     }
 
@@ -69,6 +94,16 @@ router.post('/', (req, res) => {
 
 router.put('/wotd', (req, res) => {
     Workout.setWorkoutOfTheDay(req.body.slug, (err, status) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).send();
+    });
+});
+
+
+router.put('/setfav', (req, res) => {
+    Workout.setFavourite(req.body.slug, req.user.username, req.body.favourite, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
         }

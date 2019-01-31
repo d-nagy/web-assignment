@@ -13,7 +13,7 @@ const getPerson = (username, done) => {
     if (person) {
         return done(null, 200, person);
     }
-    return done(Error('Person not found'), 404);
+    return done(Error('Person not found'), 404, null);
 }; 
 
 

@@ -348,6 +348,20 @@ function deleteWorkout(slug) {
     });
 };
 
+function setFavourite(slug, favourite) {
+    $.ajax({
+        type: 'PUT',
+        url: '/workout/setfav',
+        data: {
+            slug: slug,
+            favourite: favourite
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        fetchWorkouts(populateWorkoutResults);
+    }).fail(function(jqXHR, textStatus, err) {
+
+    });
+};
 
 function populateWorkoutResults(data, textStatus, jqXHR) {
     var workouts = data.workouts;
@@ -358,6 +372,9 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
     }
 
     $('#noWorkouts').nextAll().remove();
+    $('#workoutOfTheDay').html('');
+
+    var wotdExists = false;
 
     $.each(workouts, function(i, wk) {
         $wkCard = $('#workout-card-template').clone(true);
@@ -421,19 +438,28 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $wkCard.find('.workoutDisplay').attr('id', wkDataTarget);
         
         if ($wkCard.find('.card-footer').length) {
-            $wkCard.find('.card-footer .fav-button').attr('data-id', wk.slug);
-            $wkCard.find('.card-footer .fav-button')[0].addEventListener('click', function(e) {
+            var fav = $wkCard.find('.card-footer .fav-button');
+            fav.attr('data-id', wk.slug);
+            if (wk.favourite === true) {
+                fav.addClass('favourite');
+            }
+
+            fav[0].addEventListener('click', function(e) {
+                var favourite = 1;
                 if ($(this).hasClass('favourite')) {
-                    $(this).removeClass('favourite').addClass('unfavourite');
+                    $('.fav-button[data-id=' + wk.slug + ']').removeClass('favourite').addClass('unfavourite');
+                    var favourite = -1;
                 } else {
-                    $(this).removeClass('unfavourite').addClass('favourite');
+                    $('.fav-button[data-id=' + wk.slug + ']').removeClass('unfavourite').addClass('favourite');
                 }
+                setFavourite($(this).attr('data-id'), favourite);
             });
             $wkCard.find('.card-footer .workout-rating').attr('data-id', wk.slug);
         }
 
 
         if (wk.wotd === true) {
+            wotdExists = true;
             $wkCard.find('.setWotdButton').remove();
             $wotd = $(document.createElement('p'));
             $wotd.addClass('lead');
@@ -443,8 +469,23 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
             $icon.after('Workout of the Day');
             $wkCard.find('.footer').append($wotd);
             
-            $wotdCard = $wkCard.clone(true);
+            $wotdCard = $wkCard.clone(true, true);
             
+            if ($wkCard.find('.card-footer').length) {
+                $wotdCard.find('.card-footer .fav-button').attr('data-id', wk.slug);
+                $wotdCard.find('.card-footer .fav-button')[0].addEventListener('click', function(e) {
+                    var favourite = 1;
+                    if ($(this).hasClass('favourite')) {
+                        $('.fav-button[data-id=' + wk.slug + ']').removeClass('favourite').addClass('unfavourite');
+                        var favourite = -1;
+                    } else {
+                        $('.fav-button[data-id=' + wk.slug + ']').removeClass('unfavourite').addClass('favourite');
+                    }
+                    setFavourite($(this).attr('data-id'), favourite);
+                });
+            }
+
+            $wkCard.find('.card-footer .workout-rating').attr('data-id', wk.slug);
             var exDataTarget = "exerciseCollapse-wotd";
             var wkDataTarget = "workoutCollapse-wotd";
 
@@ -462,6 +503,10 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
 
         $wkCard.show();
     });
+
+    if (wotdExists === false) {
+        document.getElementById('#wotdRow').hidden = true;
+    }
 };
 
 (function() {

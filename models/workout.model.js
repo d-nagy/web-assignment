@@ -4,6 +4,8 @@ const slugify = require('slugify');
 let workouts = require('../data/workouts.json');
 
 let Person = require('../models/person.model');
+let Rating = require('../models/ratings.model');
+
 
 
 const getWorkouts = () => {
@@ -89,11 +91,39 @@ const setWorkoutOfTheDay = (slug, done) => {
 };
 
 
+const setFavourite = (slug, username, favourite, done) => {
+    getWorkout(slug, (err, status, result) => {
+        if (!err) {
+            if (favourite > 0) {
+                Rating.addFavourite(slug, username, (err, status) => {
+                    if (err) {
+                        return done(err, status);
+                    }
+                    result.favourites += 1;
+                    return done(null, 200);
+                });
+            } else {
+                Rating.removeFavourite(slug, username, (err, status) => {
+                    if (err) {
+                        return done(err, status);
+                    }
+                    result.favourites -= 1;
+                    return done(null, 200);
+                });
+            }
+        } else {
+            return done(err, status);
+        }
+    });
+};
+
+
 module.exports = {
     getWorkouts,
     getWorkout,
     addWorkout,
     getWorkoutOfTheDay,
     setWorkoutOfTheDay,
+    setFavourite,
     deleteWorkout
 };
