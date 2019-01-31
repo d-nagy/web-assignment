@@ -5,6 +5,7 @@ html
         title= "DUCali - " + title
         include head.pug
         block head
+            link(rel="stylesheet" href="css/style.css")
     body
         nav(id="sidebar")
             div(id="dismiss")
@@ -17,9 +18,9 @@ html
                 ul(class="list-unstyled components")
                     p #{user.username}
                     li(class="active")
-                        a(href="#") Home        
+                        a(href="/" id="homeLink") Home
                     li
-                        a(href="#") Profile
+                        a(href="/") Profile
             
             a(class="btn btn-light" id="logout-btn" href="/logout") Log Out
 

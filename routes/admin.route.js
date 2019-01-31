@@ -15,7 +15,19 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    return res.render('admin');
+    return res.render('workouts');
+});
+
+router.get('/member', (req, res) => {
+    return res.render('members');
+});
+
+router.get('/exercise', (req, res) => {
+    return res.render('exercises');
+});
+
+router.get('/workout', (req, res) => {
+    return res.render('workouts');
 });
 
 

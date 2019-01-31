@@ -1,4 +1,5 @@
 function fetchExercises() {
+    console.log('fetching exercises');
     var args = Array.from(arguments);
     $.ajax({
         type: 'GET',
@@ -46,8 +47,7 @@ function populateExerciseResults(data, textStatus, jqXHR) {
     if (data.length === 0) {
         $('#noExercises').show();
     }
-
-    $('#exerciseResults').html('');
+    $('#noExercises').nextAll().remove();
 
     $.each(data, function(i, item) {
         $exCard = $('#ex-card-template').clone(true);
@@ -56,16 +56,52 @@ function populateExerciseResults(data, textStatus, jqXHR) {
         $exCard.find('.card-title').html(item.name);
         $exCard.find('.card-text').html(item.description);
 
-        // var colors = ['#37ce1f', '#b8ce1f', '#ffdb4c', '#ff923f', '#e41c1c'];
-        // var color = colors[parseInt(item.difficulty) - 1];
-        // $star = $exCard.find('.star' + item.difficulty);
-        // $stars = $star.prevUntil('.rating-static');
-        // $star.removeClass('far').addClass('fas').css('color', color);
-        // $stars.removeClass('far').addClass('fas').css('color', color);
-
         setStarRating($exCard, item.difficulty);
         
         $('#exerciseResults').append($exCard);
         $exCard.show();
     });
 };
+
+(function() {
+    window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (form.checkValidity() !== false) {
+                    $.ajax({
+                        type: 'POST',
+                        url: form.getAttribute('action'),
+                        data: $(form).serialize(),
+                    }).done(function(data, textStatus, jqXHR) {
+                        $(form).children('.alert-danger').hide();
+                        $(form).children('.alert-success').html('Exercise added!').show().delay(5000).fadeOut(200);
+                        $(form).find('input:text, textarea').val('');
+                        $(form).find('input:radio').removeAttr('checked').removeAttr('selected');
+                        $(form).find('.rating span').removeClass('checked selected');
+                        $(form).find('.rating i').removeClass('fas').addClass('far');
+                        form.classList.remove('was-validated');
+                        fetchExercises(populateExerciseResults);
+                    }).fail(function(jqXHR, textStatus, err) {
+                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                    });
+                } else {
+                    form.classList.add('was-validated');
+                    if (!$(form).find('input[name=exDifficulty]:checked').val()) {
+                        $(form).find('.rating .invalid-feedback').show();
+                    } else {
+                        $(form).find('.rating .invalid-feedback').hide();
+                    }
+                }
+
+            }, false);
+        });
+    }, false);
+})();
+
+fetchExercises(populateExerciseResults);

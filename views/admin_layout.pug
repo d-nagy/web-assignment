@@ -1,0 +1,44 @@
+extends layout.pug
+
+block vars
+    - var title = "Admin"
+
+block head
+    link(rel="stylesheet" href="../css/style.css")
+
+block sidebar-menu
+    ul(class="list-unstyled components")
+        p #{user.username}
+        li
+            a(href="/" id="homeLink") Home
+        li
+            a(href="/" id="profileLink") Profile
+
+    ul(class="list-unstyled components")
+        p Admin Panel
+        li
+            a(href="/admin/workout" id="workoutLink") Workouts
+        li
+            a(href="/admin/exercise" id="exerciseLink") Exercises
+        li
+            a(href="/admin/member" id="memberLink") Members
+
+block content
+    div(class="container-fluid" id="content")
+        block sub_content
+    
+    block templates
+
+    div(class="modal fade" id="removeBlockModal" tabindex="-1" role="dialog" aria-labelledby="removeBlockModalTitle" aria-hidden="true")
+        div(class="modal-dialog modal-dialog-centered" role="document")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h5(class="modal-title" id="removeBlockModalTitle") Confirm delete
+                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true"). 
+                            &times;
+                div(class="modal-body").
+                    Are you sure you want to delete this item?
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-light" data-dismiss="modal") Cancel
+                    button(id="confirmRemove" type="button" class="btn btn-danger" data-dismiss="modal") Delete

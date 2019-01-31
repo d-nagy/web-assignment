@@ -1,35 +1,67 @@
+extends admin_layout.pug
+
 include mixins.pug
 
-div(class="col-lg-6 main-col")
-    h2(class="mainTitle") Create Workout
-    div(class="content-col")
-        div(class="workout-creator")
-            label Workout Creator
-            div(class="board")
+block sub_content
+    div(class="row" id="workouts")
+        div(class="col-lg-6 main-col")
+            h2(class="mainTitle") Create Workout
+            div(class="content-col")
+                div(class="workout-creator")
+                    label Workout Creator
+                    div(class="board")
 
-            +add-block
+                    +add-block
 
-        br
+                br
 
-        form(action="/workout" method="POST" id="addWorkoutForm" class="needs-validation custom-form" novalidate)
-            input(type="hidden" name="username" val="#{user.username}")
-            
-            div(class="form-group")
-                label(for="wkTitleInput") Title
-                input(type="text" class="form-control" id="wkTitleInput" name="wkTitle" placeholder="Enter title" required)
-                div(class="invalid-feedback") Please give a title.
+                form(action="/workout" method="POST" id="addWorkoutForm" class="needs-validation custom-form" novalidate)
+                    input(type="hidden" name="username" val="#{user.username}")
+                    
+                    div(class="form-group")
+                        label(for="wkTitleInput") Title
+                        input(type="text" class="form-control" id="wkTitleInput" name="wkTitle" placeholder="Enter title" required)
+                        div(class="invalid-feedback") Please give a title.
 
-            div(class="form-group")
-                label(for="wkDescriptionInput") Description
-                textarea(class="form-control" id="wkDescriptionInput" name="wkDescription" rows="3" placeholder="Give any extra info on how to perform the workout (Optional)")
+                    div(class="form-group")
+                        label(for="wkDescriptionInput") Description
+                        textarea(class="form-control" id="wkDescriptionInput" name="wkDescription" rows="3" placeholder="Give any extra info on how to perform the workout (Optional)")
 
-            div(class="alert alert-success" style="display:none")
-            div(class="alert alert-danger" style="display:none")
+                    div(class="alert alert-success" style="display:none")
+                    div(class="alert alert-danger" style="display:none")
 
-            button(type="submit" class="btn btn-lg btn-block custom-submit") Submit
+                    button(type="submit" class="btn btn-lg btn-block custom-submit") Submit
 
-div(class="col-lg-6 main-col")
-    h2(class="mainTitle") Search Workouts
+        div(class="col-lg-6 main-col")
+            h2(class="mainTitle") Search Workouts
 
-    div(class="content-col" id="workoutResults")
-        h2(id="noWorkouts" style="display:none") No workouts
+            div(class="content-col" id="workoutResults")
+                h2(id="noWorkouts" style="display:none") No workouts
+
+
+block templates
+    +exercise-single()(id="ex-template", style="display:none")
+    +exercise-block()(id="ex-block-template", style="display:none")
+    +rest()(id="rest-template", style="display:none")
+    +ex-card-li()(id="ex-card-li-template", style="display:none")
+    +workout-card()(id="workout-card-template", style="display:none")
+    +ex-single-li()(id="ex-single-li-template", style="display:none")
+    +ex-block-li()(id="ex-block-li-template", style="display:none")
+    +rest-li()(id="rest-li-template", style="display:none")
+
+
+block scripts
+    script(src="https://unpkg.com/web-animations-js@2.3.1/web-animations.min.js")
+    script(src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js")
+    script(src="https://unpkg.com/muuri@0.7.1/dist/muuri.min.js")
+
+    script(src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js")
+
+    script(src="../js/script.js")
+    script(src="../js/workouts.js")
+    script(src="../js/exercises.js")
+
+    script.
+        $('#workoutLink').parent().addClass('active');
+
+        fetchExercises(populateExerciseList);

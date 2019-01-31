@@ -1,54 +1,69 @@
+extends admin_layout.pug
+
 include mixins.pug
 
-div(class="main-col w-100")
-    h2(class="mainTitle") Exec
-    div(class="row" id="execCards")
+block sub_content
+    div(class="row" id="workouts")
+        div(class="main-col w-100")
+            h2(class="mainTitle") Exec
+            div(class="row" id="execCards")
 
-    hr(class="my-3")
+            hr(class="my-3")
 
-    h2(class="mainTitle") Ordinary members
-    div(class="table-responsive")
-        table(class="table")
-            thead(class="thead-light")
-                tr
-                    th(scope="col") Name
-                    th(scope="col") Total workouts completed
-                    th(scope="col") Daily workouts completed
-                    th(scope="col")
-            tbody(id="userTable")
-    
-    div(class="modal fade modifyUserModal" id="promoteUserModal" tabindex="-1" role="dialog" aria-labelledby="promoteUserModalTitle" aria-hidden="true")
-        div(class="modal-dialog modal-dialog-centered" role="document")
-            div(class="modal-content")
-                div(class="modal-header")
-                    h5(class="modal-title" id="promoteUserModalTitle") Promote member to Exec
-                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-                        span(aria-hidden="true") &times;
-                div(class="modal-body")
-                    form
-                        input(type="hidden" id="promoteUserUsername")
-                        div(class="form-group")
-                            label(for="userRoleInput") Exec role
-                            input(type="text" class="form-control" id="userRoleInput")
-                            div(class="invalid-feedback") Please enter a role.
-                    
-                div(class="modal-footer")
-                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
-                    button(type="button" id="promoteUserSubmit" class="btn btn-primary modifyUserSubmit") Promote!
+            h2(class="mainTitle") Ordinary members
+            div(class="table-responsive")
+                table(class="table")
+                    thead(class="thead-light")
+                        tr
+                            th(scope="col") Name
+                            th(scope="col") Total workouts completed
+                            th(scope="col") Daily workouts completed
+                            th(scope="col")
+                    tbody(id="userTable")
+            
+            div(class="modal fade modifyUserModal" id="promoteUserModal" tabindex="-1" role="dialog" aria-labelledby="promoteUserModalTitle" aria-hidden="true")
+                div(class="modal-dialog modal-dialog-centered" role="document")
+                    div(class="modal-content")
+                        div(class="modal-header")
+                            h5(class="modal-title" id="promoteUserModalTitle") Promote member to Exec
+                            button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div(class="modal-body")
+                            form
+                                input(type="hidden" id="promoteUserUsername")
+                                div(class="form-group")
+                                    label(for="userRoleInput") Exec role
+                                    input(type="text" class="form-control" id="userRoleInput")
+                                    div(class="invalid-feedback") Please enter a role.
+                            
+                        div(class="modal-footer")
+                            button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                            button(type="button" id="promoteUserSubmit" class="btn btn-primary modifyUserSubmit") Promote!
 
-    if user.level > 1
-        div(class="modal fade modifyUserModal" id="demoteUserModal" tabindex="-1" role="dialog" aria-labelledby="demoteUserModalTitle" aria-hidden="true")
-            div(class="modal-dialog modal-dialog-centered" role="document")
-                div(class="modal-content")
-                    div(class="modal-header")
-                        h5(class="modal-title" id="demoteUserModalTitle") Demote member from Exec
-                        button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-                            span(aria-hidden="true") &times;
-                    div(class="modal-body") Are you sure you want to remove this person from the Exec?
-                        form
-                            input(type="hidden" id="demoteUserUsername")
-                        
-                    div(class="modal-footer")
-                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
-                        button(type="button" id="demoteUserSubmit" class="btn btn-danger modifyUserSubmit") Demote
+            if user.level > 1
+                div(class="modal fade modifyUserModal" id="demoteUserModal" tabindex="-1" role="dialog" aria-labelledby="demoteUserModalTitle" aria-hidden="true")
+                    div(class="modal-dialog modal-dialog-centered" role="document")
+                        div(class="modal-content")
+                            div(class="modal-header")
+                                h5(class="modal-title" id="demoteUserModalTitle") Demote member from Exec
+                                button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                                    span(aria-hidden="true") &times;
+                            div(class="modal-body") Are you sure you want to remove this person from the Exec?
+                                form
+                                    input(type="hidden" id="demoteUserUsername")
+                                
+                            div(class="modal-footer")
+                                button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+                                button(type="button" id="demoteUserSubmit" class="btn btn-danger modifyUserSubmit") Demote
 
+
+block templates
+    +exec-card(user.level)(id="exec-card-template", style="display:none")
+
+
+block scripts
+    script(src="../js/script.js")
+    script(src="../js/members.js")
+
+    script.
+        $('#memberLink').parent().addClass('active');

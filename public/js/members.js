@@ -127,3 +127,5 @@ $('#demoteUserSubmit').click(function(event) {
          
     });
 });
+
+populateMemberResults();

@@ -357,7 +357,7 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $('#noWorkouts').show();
     }
 
-    $('#workoutResults').html('');
+    $('#noWorkouts').nextAll().remove();
 
     $.each(workouts, function(i, wk) {
         $wkCard = $('#workout-card-template').clone(true);
@@ -423,3 +423,62 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $wkCard.show();
     });
 };
+
+(function() {
+    window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var formValid = form.checkValidity();
+                if (formValid === false) {
+                    form.classList.add('was-validated');
+                }
+
+                if (checkValidWorkout() !== false && formValid !== false) {
+                    var formArray = $(form).serializeArray();
+                    var formData = {};
+                    for (var i = 0; i < formArray.length; i++){
+                        formData[formArray[i]['name']] = formArray[i]['value'];
+                    }
+
+                    var postData = {
+                        formData: JSON.stringify(formData),
+                        wkData: JSON.stringify(serializeWorkout())
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: form.getAttribute('action'),
+                        data: postData,
+                    }).done(function(data, textStatus, jqXHR) {
+                        $(form).children('.alert-danger').hide();
+                        $(form).children('.alert-success').html('Workout added!').show().delay(5000).fadeOut(200);
+                        $(form).find('input:text, textarea').val('');
+                        clearWorkout();
+                        fetchWorkouts(populateWorkoutResults);
+                    }).fail(function(jqXHR, textStatus, err) {
+                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                    });
+                }
+                
+            }, false);
+        });
+    }, false);
+})();
+
+$('.add-btn').click(function() {
+    $(this).fadeToggle('fast');
+    $(this).next('.add-btn-group').fadeToggle('fast');
+});
+
+$('.add-btn-group > button').click(function() {
+    $(this).parent().fadeToggle('fast');
+    $(this).parent().prev('.add-btn').fadeToggle('fast');
+});
+
+fetchWorkouts(populateWorkoutResults);

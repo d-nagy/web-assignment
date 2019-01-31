@@ -15,15 +15,11 @@ router.get('/', (req, res) => {
     // console.log(req.session);
     if (req.isAuthenticated()) {
         // console.log(req.user);
-        if (req.user.admin) {
-            return res.redirect('/admin');
-        }
         return res.render('index');
     } else {
         return res.redirect('/login');
     }
 });
-
 
 router.use('/', auth);
 router.use('/admin/', admin);

@@ -5,6 +5,25 @@ include mixins.pug
 block vars
     - var title = "Home"
 
+block sidebar-menu
+        ul(class="list-unstyled components")
+            p #{user.username}
+            li
+                a(href="/" id="homeLink") Home
+            li
+                a(href="/" id="profileLink") Profile
+
+        if (user.level > 0)
+            ul(class="list-unstyled components")
+                p Admin Panel
+                li
+                    a(href="/admin/workout" id="workoutLink") Workouts
+                li
+                    a(href="/admin/exercise" id="exerciseLink") Exercises
+                li
+                    a(href="/admin/member" id="memberLink") Members
+    
+
 block content
     div(class="jumbotron text-center border-bottom")
         h1(class="display-4") Durham University Calisthenics
@@ -45,5 +64,6 @@ block scripts
     script(src="js/starRating.js")
 
     script.
+        $('#homeLink').parent().addClass('active');
         fetchExercises(populateExerciseList, populateExerciseResults);
         fetchWorkouts(populateWorkoutResults);
