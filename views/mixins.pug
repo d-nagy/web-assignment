@@ -175,3 +175,28 @@ mixin workout-card(admin=true)
                 hr(class="my-3")
                 div(class="text-center footer")
                     button(class="btn btn-info setWotdButton" data-toggle="modal" data-target="#setWotdModal") Set Workout of the Day
+        
+        if (!admin)
+            div(class="card-footer d-flex")
+                i(class="fas fa-heart fav-button")
+                div(class="rating workout-rating")
+                    span
+                        input(type="radio" name="wkRating" id="str5" value="5" required)
+                        label(for="str5")
+                            i(class="far fa-star")
+                    span
+                        input(type="radio" name="wkRating" id="str4" value="4" required)
+                        label(for="str4")
+                            i(class="far fa-star")
+                    span
+                        input(type="radio" name="wkRating" id="str3" value="3" required)
+                        label(for="str3")
+                            i(class="far fa-star")
+                    span
+                        input(type="radio" name="wkRating" id="str2" value="2" required)
+                        label(for="str2")
+                            i(class="far fa-star")
+                    span
+                        input(type="radio" name="wkRating" id="str1" value="1" required)
+                        label(for="str1")
+                            i(class="far fa-star")
