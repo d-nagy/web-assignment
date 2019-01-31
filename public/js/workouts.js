@@ -419,17 +419,19 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
 
         $wkCard.find('.wkCollapseButton').attr('data-target', "#" + wkDataTarget);
         $wkCard.find('.workoutDisplay').attr('id', wkDataTarget);
+        
+        if ($wkCard.find('.card-footer').length) {
+            $wkCard.find('.card-footer .fav-button').attr('data-id', wk.slug);
+            $wkCard.find('.card-footer .fav-button')[0].addEventListener('click', function(e) {
+                if ($(this).hasClass('favourite')) {
+                    $(this).removeClass('favourite').addClass('unfavourite');
+                } else {
+                    $(this).removeClass('unfavourite').addClass('favourite');
+                }
+            });
+            $wkCard.find('.card-footer .workout-rating').attr('data-id', wk.slug);
+        }
 
-        $wkCard.find('.card-footer .fav-button').attr('data-id', wk.slug);
-        $wkCard.find('.card-footer .fav-button')[0].addEventListener('click', function(e) {
-            if ($(this).hasClass('favourite')) {
-                $(this).removeClass('favourite').addClass('unfavourite');
-            } else {
-                $(this).removeClass('unfavourite').addClass('favourite');
-            }
-        });
-
-        $wkCard.find('.card-footer .workout-rating').attr('data-id', wk.slug);
 
         if (wk.wotd === true) {
             $wkCard.find('.setWotdButton').remove();
