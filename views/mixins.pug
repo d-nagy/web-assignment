@@ -1,0 +1,170 @@
+mixin exercise-card(admin=true)
+    div(class="card exercise-card" id!=attributes.id style!=attributes.style)
+        div(class="card-body")
+            if admin
+                span(class="btn remove-btn" data-toggle="modal" data-target="#removeBlockModal")
+                    i(class="fas fa-times")
+
+            h5(class="card-title") Name
+            p(class="card-text") Description
+            div(class="rating-static")
+                span(class="far fa-star star1")
+                span(class="far fa-star star2")
+                span(class="far fa-star star3")
+                span(class="far fa-star star4")
+                span(class="far fa-star star5")
+
+mixin exec-card(level=0)
+    div(class="card exec-card" id!=attributes.id style!=attributes.style)
+        i(class="fas fa-user-circle profilePic")
+        div(class="card-body")
+            h5(class="card-title") Name
+            h6(class="card-subtitle mb-2 text-muted") Role
+
+            dl(class="row")
+                dt(class="col-sm-9") Exercises created
+                dd(class="col-sm-3 exCreated") 0
+
+                dt(class="col-sm-9") Workouts created
+                dd(class="col-sm-3 wkCreated") 0
+
+                dt(class="col-sm-9") Workouts completed
+                dd(class="col-sm-3 wkComplete") 0
+
+                dt(class="col-sm-9") Daily streak
+                dd(class="col-sm-3 dailyStreak") 0
+        if level > 1
+            div(class="card-footer text-center")
+                button(class="btn btn-danger demoteButton" data-toggle="modal" data-target="#demoteUserModal") Demote
+
+mixin controls
+    span(class="btn remove-btn" data-toggle="modal" data-target="#removeBlockModal")
+        i(class="fas fa-times")
+    span(class="drag-handle")
+        i(class="fas fa-grip-vertical")
+
+mixin exercise-single
+    div(class="board-item exercise-single" id!=attributes.id style!=attributes.style)
+        div(class="board-item-content")
+            form(class="form-row block-form")
+                div(class="col-6")
+                    label(class="sr-only" for="inputExercise") Exercise
+                    select(class="custom-select mr-2" name="inputExercise" id="inputExercise" required)
+                        option(disabled selected value="") Select exercise
+                div(class="col-6")
+                    div(class="input-group")
+                        input(type="number" min="1" class="form-control " name="quantity" placeholder="Quantity" required)
+                        div(class="input-group-append btn-group btn-group-toggle" data-toggle="buttons")
+                            label(class="btn btn-outline-secondary active")
+                                input(type="radio" name="units" id="option1" value="reps" autocomplete="off" checked required)
+                                .
+                                    reps
+                            label(class="btn btn-outline-secondary")
+                                input(type="radio" name="units" id="option2" value="seconds" autocomplete="off" required)
+                                .
+                                    seconds
+            +controls
+
+mixin rest
+    div(class="board-item rest" id!=attributes.id style!=attributes.style)
+        div(class="board-item-content")
+            form(class="form-inline block-form")
+                h5(class="mr-3 my-auto") Rest
+                label(class="sr-only" for="inputRest") Rest
+                div(class="input-group")
+                    input(type="number" min="1" class="form-control" name="inputRest" id="inputRest" placeholder="Duration" required)
+                    div(class="input-group-append")
+                        span(class="input-group-text") seconds
+            +controls
+
+mixin exercise-block
+    div(class="board-column exercise-block" id!=attributes.id style!=attributes.style)
+        div(class="board-column-header")
+            form(class="form-row block-form")
+                div(class="col-6")
+                    label(class="sr-only" for="inputSectionTitle") Section Title
+                    input(type="text" class="form-control" name="sectionTitle" id="inputSectionTitle" placeholder="Title" required)
+                div(class="col-6")
+                    label(class="sr-only" for="inputSectionRepetitions") Section Repetitions
+                    div(class="input-group")
+                        input(type="number" min="1" class="form-control" name="secionReps" id="inputSectionRepetitions" placeholder="# of times to repeat" required)
+                        div(class="input-group-append")
+                            span(class="input-group-text") reps
+            +controls
+        div(class="board-column-body" style="border: solid transparent; border-width: 10px 20px;")
+            div(class="board-column-content" id!=attributes.id+'-content')
+                //- +exercise-single
+                //- +exercise-single
+            +add-block(true)
+
+mixin add-block(inColumn=false)
+    div(class="add-btn-container" )
+        button(type="button" class="btn btn-outline-dark add-btn")
+            i(class="fas fa-plus m-auto")
+
+        div(class="btn-group add-btn-group" role="group" style="display:none;")
+            button(type="button" class="btn btn-outline-dark add-ex") Exercise
+            if !inColumn
+                button(type="button" class="btn btn-outline-dark add-ex-block") Exercise Block
+            button(type="button" class="btn btn-outline-dark add-rest") Rest
+            button(type="button" class="btn btn-outline-dark")
+                i(class="fas fa-times")
+
+mixin ex-card-li
+    div(class="card exercise-card" id!=attributes.id style!=attributes.style)
+        div(class="card-body")
+            h5(class="card-title") Name
+            p(class="card-text") Description
+            div(class="rating-static")
+                span(class="far fa-star star1")
+                span(class="far fa-star star2")
+                span(class="far fa-star star3")
+                span(class="far fa-star star4")
+                span(class="far fa-star star5")
+
+mixin ex-single-li
+    li(class="list-group-item ex-single-li" id!=attributes.id style!=attributes.style)
+        h6 Name &times 0 reps
+
+mixin ex-block-li
+    li(class="list-group-item ex-block-li" id!=attributes.id style!=attributes.style)
+        h6 Title &times 0 reps
+        ul(class="list-group")
+
+mixin rest-li
+    li(class="list-group-item rest-li" id!=attributes.id style!=attributes.style)
+        h6 Rest for 0 seconds
+
+mixin workout-card(admin=true)
+    div(class="card workout-card" id!=attributes.id style!=attributes.style)
+        div(class="card-body")
+            if admin
+                span(class="btn remove-btn" data-toggle="modal" data-target="#removeBlockModal")
+                    i(class="fas fa-times")
+
+            h5(class="card-title") Title
+            p(class="card-text") Description
+
+            p
+                button(type="button" class="btn btn-light wkCollapseButton" data-toggle="collapse" data-target="#workoutCollapse-slug") Workout
+                    i(class="fa fa-angle-down")
+
+            div(class="workoutDisplay collapse" id="workoutCollapse-slug")
+                ul(class="list-group list-group-flush")
+
+            p
+                button(type="button" class="btn btn-light exCollapseButton" data-toggle="collapse" data-target="#exerciseCollapse-slug") Exercises
+                    i(class="fa fa-angle-down")
+
+            div(class="exerciseDisplay collapse" id="exerciseCollapse-slug")
+
+            div(class="ratings")
+                div(class="rating-static")
+                    span(class="far fa-star star1")
+                    span(class="far fa-star star2")
+                    span(class="far fa-star star3")
+                    span(class="far fa-star star4")
+                    span(class="far fa-star star5")
+
+                i(class="fas fa-heart fav-icon")
+                span(class="badge badge-pill badge-light fav-counter") 0

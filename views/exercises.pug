@@ -1,18 +1,4 @@
-mixin exercise-card
-    div(class="card exercise-card" id!=attributes.id style!=attributes.style)
-        div(class="card-body")
-            span(class="btn remove-btn" data-toggle="modal" data-target="#removeBlockModal")
-                i(class="fas fa-times")
-
-            h5(class="card-title") Name
-            p(class="card-text") Description
-            div(class="rating-static")
-                span(class="far fa-star star1")
-                span(class="far fa-star star2")
-                span(class="far fa-star star3")
-                span(class="far fa-star star4")
-                span(class="far fa-star star5")
-
+include mixins.pug
 
 div(class="col-lg-6 main-col")
     h2(class="mainTitle") Add Exercise
