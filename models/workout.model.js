@@ -3,6 +3,8 @@ const slugify = require('slugify');
 
 let workouts = require('../data/workouts.json');
 
+let Person = require('../models/person.model');
+
 
 const getWorkouts = () => {
     return workouts;
@@ -23,10 +25,19 @@ const addWorkout = (data, done) => {
         return done(Error('Invalid workout object'), 400);
     }
 
+    let author;
+    Person.getPerson(data.author, (err, status, result) => {
+        if (err) {
+            return done(Error('Invalid workout author'), status);
+        }
+        author = result.forename + ' ' +  result.surname;
+    });
+
     let slug = slugify(data.title);
     getWorkout(slug, (err, status, result) => {
         if (err) {
             data['slug'] = slug;
+            data['author'] = author;
             data['difficulty'] = 0;
             data['favourites'] = 0;
             workouts.push(data);

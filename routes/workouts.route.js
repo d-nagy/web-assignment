@@ -54,6 +54,7 @@ router.post('/', (req, res) => {
     let workout = {
         title: formData.wkTitle,
         description: formData.wkDescription,
+        author: formData.username,
         routine: wkData
     };
 

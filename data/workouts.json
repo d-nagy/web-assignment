@@ -1,6 +1,7 @@
 [
     { "title": "Handstand hold workout",
         "description": "",
+        "author": "Tim Smith",
         "routine":
          [ { "type": "exercise-single",
              "slug": "handstand-hold",

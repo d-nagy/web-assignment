@@ -12,6 +12,8 @@ div(class="col-lg-6 main-col")
         br
 
         form(action="/workout" method="POST" id="addWorkoutForm" class="needs-validation custom-form" novalidate)
+            input(type="hidden" name="username" val="#{user.username}")
+            
             div(class="form-group")
                 label(for="wkTitleInput") Title
                 input(type="text" class="form-control" id="wkTitleInput" name="wkTitle" placeholder="Enter title" required)

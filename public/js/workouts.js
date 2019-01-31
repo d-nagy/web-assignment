@@ -396,6 +396,7 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $wkCard.find('.card-text').html(wk.description);
         setStarRating($wkCard, wk.difficulty);
         $wkCard.find('.fav-counter').html(wk.favourites);
+        $wkCard.find('.workoutAuthor').html('Created by ' + wk.author);
 
         $.each(exercises, function(i, ex) {
             $card = $('#ex-card-li-template').clone(true);
