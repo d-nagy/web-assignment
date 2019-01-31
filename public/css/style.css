@@ -64,6 +64,13 @@ a, a:hover, a:focus {
     z-index: 11;
 }
 
+#navLocation {
+    font-size: 1.5em;
+    margin-right: auto;
+    margin-left: 1em;
+    margin-bottom: 0;
+}
+
 #sidebar {
     min-width: 15em;
     max-width: 15em;

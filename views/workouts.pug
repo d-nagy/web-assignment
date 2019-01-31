@@ -80,6 +80,7 @@ block scripts
     script(src="../js/exercises.js")
 
     script.
+        $('#navLocation').html('Admin - Workouts');
         $('#workoutLink').parent().addClass('active');
 
         fetchExercises(populateExerciseList);

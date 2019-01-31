@@ -64,6 +64,7 @@ block scripts
     script(src="js/starRating.js")
 
     script.
+        $('#navLocation').html('Home');
         $('#homeLink').parent().addClass('active');
         fetchExercises(populateExerciseList, populateExerciseResults);
         fetchWorkouts(populateWorkoutResults);
