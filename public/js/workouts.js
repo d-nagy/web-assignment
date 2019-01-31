@@ -357,6 +357,8 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $('#noWorkouts').show();
     }
 
+    $('#workoutResults').html('');
+
     $.each(workouts, function(i, wk) {
         $wkCard = $('#workout-card-template').clone(true);
         $wkCard.removeAttr('id');

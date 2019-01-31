@@ -2,39 +2,36 @@ doctype html
 html
     block vars
     head
-        title= "DUCal - " + title
+        title= "DUCali - " + title
         include head.pug
         block head
     body
-        div(class="wrapper")
-            nav(id="sidebar")
-                div(id="dismiss")
-                    i(class="fas fa-arrow-left")
+        nav(id="sidebar")
+            div(id="dismiss")
+                i(class="fas fa-arrow-left")
 
-                div(class="sidebar-header")
-                    h3 DUCal
-                
-                block sidebar-menu
-                    ul(class="list-unstyled components")
-                        p #{user.username}
-                        li(class="active")
-                            a(href="#") Home
-                        li
-                            a(href="#") Profile
-                        li
-                            a(href="#") About
-                
-                a(class="btn btn-light" id="logout-btn" href="/logout") Log Out
+            div(class="sidebar-header")
+                h3 DUCali
+            
+            block sidebar-menu
+                ul(class="list-unstyled components")
+                    p #{user.username}
+                    li(class="active")
+                        a(href="#") Home        
+                    li
+                        a(href="#") Profile
+            
+            a(class="btn btn-light" id="logout-btn" href="/logout") Log Out
 
-            div(class="overlay")
+        div(class="overlay")
 
-            nav(class="navbar navbar-expand-lg navbar-light bg-light")
-                    div(class="container-fluid")
-                        button(type="button" id="sidebarCollapse" class="btn")
-                            i(class="fas fa-bars")
+        nav(class="navbar navbar-expand-lg navbar-light bg-light")
+                div(class="container-fluid")
+                    button(type="button" id="sidebarCollapse" class="btn")
+                        i(class="fas fa-bars")
 
-            div(id="mainBody")
-                block content
+        div(class="container" id="mainBody")
+            block content
         
         include footer.pug
 
@@ -52,7 +49,6 @@ html
                     // fade in the overlay
                     $('.overlay').addClass('active');
                     $('.collapse.in').toggleClass('in');
-                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
                 });
             });
         

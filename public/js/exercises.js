@@ -47,6 +47,8 @@ function populateExerciseResults(data, textStatus, jqXHR) {
         $('#noExercises').show();
     }
 
+    $('#exerciseResults').html('');
+
     $.each(data, function(i, item) {
         $exCard = $('#ex-card-template').clone(true);
         $exCard.removeAttr('id');

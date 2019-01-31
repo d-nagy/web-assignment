@@ -8,7 +8,6 @@ $('.add-btn-group > button').click(function() {
     $(this).parent().prev('.add-btn').fadeToggle('fast');
 });
 
-
 $('.list-unstyled li').click(function() {
     $('.list-unstyled li.active').removeClass('active');
     $(this).addClass('active');

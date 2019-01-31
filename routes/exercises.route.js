@@ -22,8 +22,6 @@ router.get('/:slug', (req, res) => {
 
 
 router.post('/', (req, res) => {
-    console.log(req.body);
-
     let exercise = {
         name: req.body.exName,
         description: req.body.exDescription,

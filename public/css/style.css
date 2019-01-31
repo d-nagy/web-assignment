@@ -30,6 +30,18 @@ a, a:hover, a:focus {
     max-width: 32em;
 }
 
+.jumbotron {
+    /* background-color: #7386D5;
+    color: white; */
+    background-color: #fafafa;
+    padding: 3rem 2rem;
+    margin-top: 6em;
+}
+
+#content {
+    margin-top: 6em;
+}
+
 .wrapper {
     display: block;
 }
@@ -63,7 +75,7 @@ a, a:hover, a:focus {
     background: #7386D5;
     color: #fff;
     transition: all 0.3s;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 #sidebar .sidebar-header {
@@ -119,14 +131,9 @@ ul ul a {
 }
 
 #mainBody {
-    width: 100%;
+    max-width: 100em;
     padding: 1em;
-    /* min-height: 100vh; */
     transition: all 0.3s;
-    position: absolute;
-    top: 6em;
-    right: 0;
-    z-index: 10;
 }
 
 .overlay {
@@ -304,7 +311,6 @@ ul ul a {
 
 .add-btn {
     display: flex;
-    padding: .75em 0;
 }
 
 .add-btn-group > button, .add-btn {
@@ -366,11 +372,9 @@ ul ul a {
 
 .rating span i {
     display:inline-block;
-    width: 1.5em;
     height: 1.5em;
     text-align: center;
     font-size: 1.5em;
-    margin-right: 4px;
     line-height: 1.5em;
 }
 
@@ -409,6 +413,10 @@ ul ul a {
 }
 
 /* Workout cards */
+.workout-card:not(:last-of-type) {
+    margin-bottom: 1em;
+}
+
 .workoutDisplay {
     box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
     border-radius: 4px;
@@ -459,15 +467,6 @@ ul ul a {
 }
 
 /* Members page */
-#memberNumbers {
-    margin-left: 0;
-    margin-top: 1em;
-}
-
-.bigNumber {
-    font-size: 2em;
-}
-
 .profilePic {
     margin: 15px auto 0 auto;
     font-size: 8em;
@@ -493,6 +492,14 @@ dl.row {
     margin-bottom: 0;
 }
 
-#execCards, #userCards {
+#execCards {
     margin-left: 15px;
+}
+
+#userTable td {
+    vertical-align: middle;
+}
+
+#userTable td:last-of-type {
+    text-align: center;
 }
