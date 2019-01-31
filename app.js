@@ -26,13 +26,14 @@ app.set('view engine', 'pug');
 
 
 passport.serializeUser((user, done) => {
-    done(null, { username: user.username, level: user.level });
+    done(null, user.username);
 });
 
-passport.deserializeUser((data, done) => {
-    Person.getPerson(data.username, (err, status, person) => {
+
+passport.deserializeUser((username, done) => {
+    Person.getPerson(username, (err, status, person) => {
         done(err, person);
-    })
+    });
 });
 
 passport.use(new LocalStrategy({
