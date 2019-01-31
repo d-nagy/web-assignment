@@ -9,7 +9,6 @@ const getPeople = () => {
 
 
 const getPerson = (username, done) => {
-    // console.log(people);
     let person = people.find(p => p.username === username);
     if (person) {
         return done(null, 200, person);
@@ -33,6 +32,9 @@ const addPerson = (data, done) => {
     getPerson(data.username, (err, status, result) => {
         if (err) {
             data.admin = false;
+            data.level = 0;
+            data.wk_completed = 0;
+            data.streak = 0;
             people.push(data);
             return done(null, 200);
         } else {
@@ -41,6 +43,40 @@ const addPerson = (data, done) => {
     });
 };
 
+const promotePerson = (username, role, done) => {
+    getPerson(username, (err, status, result) => {
+        if (!err) {
+            if (!result.admin) {
+                result.admin = true;
+                result.level = 1;
+                result.role = role;
+                result.ex_created = 0;
+                result.wk_created = 0;
+                return done(null, 200);
+            }
+            return done(Error('User already admin'), 400);
+        }
+        return done(err, status);
+    });
+};
+
+const demotePerson = (username, done) => {
+    getPerson(username, (err, status, result) => {
+        if (!err) {
+            if (result.admin) {
+                if (result.level === 1) {
+                    result.admin = false;
+                    result.level = 0;
+                    result.role = "";
+                    return done(null, 200);
+                }
+                return done(Error('Cannot remove level 2 admin'), 400);
+            }
+            return done(Error('User not admin'), 400);
+        }
+        return done(err, status);
+    });
+};
 
 const deletePerson = (username, done) => {
     getPerson(username, (err, status, result) => {
@@ -56,5 +92,7 @@ module.exports = {
     getPeople,
     getPerson,
     addPerson,
+    promotePerson,
+    demotePerson,
     deletePerson
 };

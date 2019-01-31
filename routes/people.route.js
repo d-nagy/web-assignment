@@ -60,6 +60,24 @@ router.post('/', (req, res) => {
     }
 });
 
+router.put('/promote', (req, res) => {
+    Person.promotePerson(req.body.username, req.body.role, (err, status) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).send();
+    });
+});
+
+router.put('/demote', (req, res) => {
+    Person.demotePerson(req.body.username, (err, status) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).send();
+    });
+});
+
 router.delete('/:username', (req, res) => {
     if (req.body.access_token === secret_token) {
         Person.deletePerson(req.params.username, (err, status) => {

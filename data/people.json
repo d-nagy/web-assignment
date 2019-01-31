@@ -4,7 +4,10 @@
         "forename": "Delia",
         "surname": "Derbyshire",
         "password": "$2a$10$mF065EOH.jmsagWPpTp6YuKAESsLLuEwHgsamGCyY/XSESGb91hfS",
-        "admin": false
+        "admin": false,
+        "level": 0,
+        "wk_completed": 3,
+        "streak": 2
     },
     {
         "username": "admin",
@@ -12,6 +15,11 @@
         "surname": "Smith",
         "password": "$2a$10$WOGEK3fWar907Ph/TdMHee2IPNydnokrQ7YgM3rx1CknDoYshSpe2",
         "admin": true,
-        "role": "President"
+        "level": 2,
+        "role": "President",
+        "wk_created": 4,
+        "ex_created": 2,
+        "wk_completed": 6,
+        "streak": 5
     }
 ]

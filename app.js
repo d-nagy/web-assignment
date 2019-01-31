@@ -26,11 +26,11 @@ app.set('view engine', 'pug');
 
 
 passport.serializeUser((user, done) => {
-    done(null, user.username);
+    done(null, { username: user.username, level: user.level });
 });
 
-passport.deserializeUser((username, done) => {
-    Person.getPerson(username, (err, status, person) => {
+passport.deserializeUser((data, done) => {
+    Person.getPerson(data.username, (err, status, person) => {
         done(err, person);
     })
 });

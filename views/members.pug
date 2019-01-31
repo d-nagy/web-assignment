@@ -1,45 +1,54 @@
-mixin exec-card
-    div(class="card exec-card" id!=attributes.id style!=attributes.style)
-        i(class="fas fa-user-circle profilePic")
-        div(class="card-body")
-            h5(class="card-title") Name
-            h6(class="card-subtitle mb-2 text-muted") Role
-
-            a(href="#" class="card-link userStatsCollapseButton" data-toggle="collapse" data-target="#userStatsCollapse-slug") More
-                i(class="fa fa-angle-down")
-
-            div(class="collapse" id="userStatsCollapse-slug")
-                dl(class="row")
-                    dt(class="col-sm-9") Exercises created
-                    dd(class="col-sm-3 exCreated") 0
-
-                    dt(class="col-sm-9") Workouts created
-                    dd(class="col-sm-3 wkCreated") 0
-
-                    dt(class="col-sm-9") Workouts completed
-                    dd(class="col-sm-3 wkComplete") 0
-
-                    dt(class="col-sm-9") Daily streak
-                    dd(class="col-sm-3 dailyStreak") 0
-
-            
-
+include mixins.pug
 
 div(class="main-col w-100")
-    h2(class="mainTitle") Members
-    
-    div(class="row" id="memberNumbers")
-        p(class="lead col-md-3" id="numMembers")
-            span(class="bigNumber") 0 
-            .
-                ordinary members
-        
-        p(class="lead" id="numExec")
-            span(class="bigNumber") 0 
-            .
-                executive members
-
+    h2(class="mainTitle") Exec
     div(class="row" id="execCards")
+
+    hr(class="my-3")
+
+    h2(class="mainTitle") Ordinary members
+    div(class="table-responsive")
+        table(class="table")
+            thead(class="thead-light")
+                tr
+                    th(scope="col") Name
+                    th(scope="col") Workouts completed
+                    th(scope="col") Daily streak
+                    th(scope="col")
+            tbody(id="userTable")
     
-    div(class="row" id="userCards")
-        
+    div(class="modal fade modifyUserModal" id="promoteUserModal" tabindex="-1" role="dialog" aria-labelledby="promoteUserModalTitle" aria-hidden="true")
+        div(class="modal-dialog modal-dialog-centered" role="document")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h5(class="modal-title" id="promoteUserModalTitle") Promote member to Exec
+                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                div(class="modal-body")
+                    form
+                        input(type="hidden" id="promoteUserUsername")
+                        div(class="form-group")
+                            label(for="userRoleInput") Exec role
+                            input(type="text" class="form-control" id="userRoleInput")
+                            div(class="invalid-feedback") Please enter a role.
+                    
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    button(type="button" id="promoteUserSubmit" class="btn btn-primary modifyUserSubmit") Promote!
+
+    if user.level > 1
+        div(class="modal fade modifyUserModal" id="demoteUserModal" tabindex="-1" role="dialog" aria-labelledby="demoteUserModalTitle" aria-hidden="true")
+            div(class="modal-dialog modal-dialog-centered" role="document")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="demoteUserModalTitle") Demote member from Exec
+                        button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true") &times;
+                    div(class="modal-body") Are you sure you want to remove this person from the Exec?
+                        form
+                            input(type="hidden" id="demoteUserUsername")
+                        
+                    div(class="modal-footer")
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+                        button(type="button" id="demoteUserSubmit" class="btn btn-danger modifyUserSubmit") Demote
+

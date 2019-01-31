@@ -1,4 +1,49 @@
 extends layout.pug
 
+include mixins.pug
+
 block vars
     - var title = "Home"
+
+block content
+    div(class="jumbotron text-center border-bottom")
+        h1(class="display-4") Durham University Calisthenics
+        p(class="lead")
+            span(style="font-family: monospace; font-size: 1.4em") cal-is-then-ics
+            .
+                : from Greek <i>kallos</i> ‘beauty’ + <i>sthenos</i> ‘strength’
+        p Bodyweight training for strength, skill and mobility
+
+    div(class="row")
+        iv(class="col-lg-12 main-col")
+            h2(class="mainTitle") Workout of the Day
+            div(class="content-col")
+
+    div(class="row")
+        div(class="col-lg-6 main-col")
+            h2(class="mainTitle") Workouts
+            div(class="content-col" id="workoutResults")
+                h2(id="noWorkouts" style="display:none") No workouts
+        
+        div(class="col-lg-6 main-col")
+            h2(class="mainTitle") Exercises
+            div(class="content-col" id="exerciseResults")
+                h2(id="noExercises" style="display:none") No exercises
+
+
+    +exercise-card(false)(id="ex-card-template", style="display:none")
+    +ex-card-li()(id="ex-card-li-template", style="display:none")
+    +workout-card(false)(id="workout-card-template", style="display:none")
+    +ex-single-li()(id="ex-single-li-template", style="display:none")
+    +ex-block-li()(id="ex-block-li-template", style="display:none")
+    +rest-li()(id="rest-li-template", style="display:none")
+
+block scripts
+    script(src="js/script.js")
+    script(src="js/workouts.js")
+    script(src="js/exercises.js")
+    script(src="js/starRating.js")
+
+    script.
+        fetchExercises(populateExerciseList, populateExerciseResults);
+        fetchWorkouts(populateWorkoutResults);
