@@ -49,7 +49,7 @@ const addWorkout = (data, done) => {
         if (err) {
             data['slug'] = slug;
             data['author'] = author;
-            data['difficulty'] = 0;
+            data['rating'] = 0;
             data['favourites'] = 0;
             workouts.push(data);
             return done(null, 200);

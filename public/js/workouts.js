@@ -395,7 +395,7 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
 
         $wkCard.find('.card-title').html(wk.title);
         $wkCard.find('.card-text').html(wk.description);
-        setStarRating($wkCard, wk.difficulty);
+        setStarRating($wkCard, wk.rating);
         $wkCard.find('.fav-counter').html(wk.favourites);
         $wkCard.find('.workoutAuthor').html('Created by ' + wk.author);
 
