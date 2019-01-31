@@ -2,36 +2,31 @@ const express = require('express');
 
 const Workout = require('../models/workout.model');
 const Exercise = require('../models/exercise.model');
-const Rating = require('../models/ratings.model');
+const Favourite = require('../models/favourite.model');
 
 const router = express.Router();
 
 
 router.get('/', (req, res) => {
     let workouts = Workout.getWorkouts();
-    let ratings = Rating.getRatingsByUsername(req.user.username);
-    let favourites = Rating.getFavouritesByUsername(req.user.username);
+    let Favourites = Favourite.getFavouritesByUsername(req.user.username);
+    let favourites = Favourite.getFavouritesByUsername(req.user.username);
 
-    let workoutsWithRatings = []
+    let workoutsWithFavourites = []
 
     workouts.forEach(workout => {
-        let hasRating = ratings.find(r => r.slug === workout.slug);
-        let hasFavourite = favourites.find(f => f.slug === workout.slug);
+        let hasFavourite = Favourites.find(r => r.slug === workout.slug);
 
-        let workoutWithRatings = Object.keys(workout).reduce((object, key) => {
+        let workoutWithFavourites = Object.keys(workout).reduce((object, key) => {
             object[key] = workout[key];
             return object;
         }, {});
         
-        if (hasRating) {
-            workoutWithRatings.rating = hasRating.rating;
-        }
-
         if (hasFavourite) {
-            workoutWithRatings.favourite = true;
+            workoutWithFavourites.favourite = true;
         }
 
-        workoutsWithRatings.push(workoutWithRatings);
+        workoutsWithFavourites.push(workoutWithFavourites);
     });
     
     let lookup = {};
@@ -64,7 +59,7 @@ router.get('/', (req, res) => {
     }
 
     let data = {
-        workouts: workoutsWithRatings,
+        workouts: workoutsWithFavourites,
         exercises: exercises
     }
 

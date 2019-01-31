@@ -16,7 +16,6 @@ p {
     font-size: 1.1em;
     font-weight: 400;
     line-height: 1.7em;
-    /* color: #999; */
 }
 
 a, a:hover, a:focus {
@@ -31,8 +30,6 @@ a, a:hover, a:focus {
 }
 
 .jumbotron {
-    /* background-color: #7386D5;
-    color: white; */
     background-color: #fafafa;
     padding: 3rem 2rem;
     margin-top: 6em;
@@ -181,13 +178,6 @@ ul ul a {
 }
 
 @media (max-width: 768px) {
-    /* #sidebar {
-        margin-left: -15em;
-    }
-    #sidebar.active {
-        margin-left: 0;
-    } */
-
     .main-col {
         padding: 0;
     }
@@ -203,7 +193,6 @@ ul ul a {
 .content-col {
     margin-left: 1%;
     background: #7386D5;
-    /* border: 20px solid transparent; */
     padding: 2%;
 }
 
@@ -361,11 +350,6 @@ ul ul a {
     left: 5px;
 }
 
-.workout-rating {
-    position: relative;
-    margin-left: auto;
-}
-
 .rating span { 
     float:right; 
     position:relative;
@@ -390,10 +374,6 @@ ul ul a {
     line-height: 1.5em;
     margin: 0 .2em;
     cursor: pointer;
-}
-
-.workout-rating span i {
-    font-size: 1em;
 }
 
 .rating #one:hover ~ span label,
@@ -429,13 +409,6 @@ ul ul a {
 .rating #five.checked label,
 .rating #five.checked ~ span label {
     color: #e41c1c;
-}
-
-.workout-rating span:hover ~ span label,
-.workout-rating span:hover label,
-.workout-rating span.checked label,
-.workout-rating span.checked ~ span label {
-    color: #fff700;
 }
 
 /* Exercise cards */
@@ -516,7 +489,7 @@ ul ul a {
 
 .fav-icon {
     color: #ea1b51;
-    margin: auto .2em auto 1em;
+    margin: auto .2em auto .2em;
 }
 
 .fav-button {
@@ -533,30 +506,11 @@ ul ul a {
 }
 
 .fav-button.favourite {
-    /* animation-name: favourite;
-    animation-duration: 0.5s; */
     color: #ea1b51;
 }
 
 .fav-button.unfavourite {
-    /* animation-name: favourite;
-    animation-duration: 0.5s; */
     color: grey;
-}
-
-@keyframes favourite {
-    0% { 
-        font-size: 1.5em; 
-    }
-    50% { 
-        font-size: 1em; 
-    }
-    75% {
-        font-size: 1.6em;
-    }
-    100% {
-        font-size: 1.5em;
-    }
 }
 
 .ratings {

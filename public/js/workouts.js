@@ -412,7 +412,6 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
 
         $wkCard.find('.card-title').html(wk.title);
         $wkCard.find('.card-text').html(wk.description);
-        setStarRating($wkCard, wk.rating);
         $wkCard.find('.fav-counter').html(wk.favourites);
         $wkCard.find('.workoutAuthor').html('Created by ' + wk.author);
 
@@ -454,7 +453,6 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
                 }
                 setFavourite($(this).attr('data-id'), favourite);
             });
-            $wkCard.find('.card-footer .workout-rating').attr('data-id', wk.slug);
         }
 
 
@@ -485,7 +483,6 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
                 });
             }
 
-            $wkCard.find('.card-footer .workout-rating').attr('data-id', wk.slug);
             var exDataTarget = "exerciseCollapse-wotd";
             var wkDataTarget = "workoutCollapse-wotd";
 
