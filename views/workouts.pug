@@ -37,6 +37,24 @@ block sub_content
 
             div(class="content-col" id="workoutResults")
                 h2(id="noWorkouts" style="display:none") No workouts
+        
+        div(class="modal fade" id="setWotdModal" tabindex="-1" role="dialog" aria-labelledby="setWotdModalTitle" aria-hidden="true")
+            div(class="modal-dialog modal-dialog-centered" role="document")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="setWotdModalTitle") Set Workout of the Day
+                        button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true"). 
+                                &times;
+                    div(class="modal-body")
+                        form
+                            input(type="hidden" id="setWotdSlug")
+                        p This action will replace the current Workout of the Day. 
+                        p Are you sure you want to continue?
+                    div(class="modal-footer")
+                        button(type="button" class="btn btn-light" data-dismiss="modal") Cancel
+                        button(id="setWotdConfirmButton" type="button" class="btn btn-info") Set Workout of the Day
+
 
 
 block templates

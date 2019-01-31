@@ -20,6 +20,17 @@ const getWorkout = (slug, done) => {
 }; 
 
 
+const getWorkoutOfTheDay = (done) => {
+    let workout = workouts.find(wk => wk.wotd === true);
+    if (workout) {
+        return done(null, 200, workout);
+    }
+    let error = new Error('No workout of the day set');
+    error.name = 'noWotd';
+    return done(error, 404);
+};
+
+
 const addWorkout = (data, done) => {
     if (!(data.title && data.routine)) {
         return done(Error('Invalid workout object'), 400);
@@ -59,9 +70,30 @@ const deleteWorkout = (slug, done) => {
 };
 
 
+const setWorkoutOfTheDay = (slug, done) => {
+    getWorkoutOfTheDay((err, status, result) => {
+        if (!err) {
+            result.wotd = false;
+        } else if (err.name !== 'noWotd') {
+            return done(err, status);
+        }
+    });
+
+    getWorkout(slug, (err, status, result) => {
+        if (!err) {
+            result.wotd = true;
+            return done(null, status);
+        }
+        return done(err, status);
+    });
+};
+
+
 module.exports = {
     getWorkouts,
     getWorkout,
     addWorkout,
+    getWorkoutOfTheDay,
+    setWorkoutOfTheDay,
     deleteWorkout
 };

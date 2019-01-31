@@ -8,11 +8,13 @@ mixin exercise-card(admin=true)
             h5(class="card-title") Name
             p(class="card-text") Description
             div(class="rating-static")
-                span(class="far fa-star star1")
-                span(class="far fa-star star2")
-                span(class="far fa-star star3")
-                span(class="far fa-star star4")
-                span(class="far fa-star star5")
+                .
+                    Difficulty:
+                span(class="far fa-circle star1")
+                span(class="far fa-circle star2")
+                span(class="far fa-circle star3")
+                span(class="far fa-circle star4")
+                span(class="far fa-circle star5")
 
 mixin exec-card(level=0)
     div(class="card exec-card" id!=attributes.id style!=attributes.style)
@@ -113,11 +115,13 @@ mixin ex-card-li
             h5(class="card-title") Name
             p(class="card-text") Description
             div(class="rating-static")
-                span(class="far fa-star star1")
-                span(class="far fa-star star2")
-                span(class="far fa-star star3")
-                span(class="far fa-star star4")
-                span(class="far fa-star star5")
+                .
+                    Difficulty:
+                span(class="far fa-circle star1")
+                span(class="far fa-circle star2")
+                span(class="far fa-circle star3")
+                span(class="far fa-circle star4")
+                span(class="far fa-circle star5")
 
 mixin ex-single-li
     li(class="list-group-item ex-single-li" id!=attributes.id style!=attributes.style)
@@ -146,12 +150,11 @@ mixin workout-card(admin=true)
                 button(type="button" class="btn btn-light wkCollapseButton" data-toggle="collapse" data-target="#workoutCollapse-slug") Workout
                     i(class="fa fa-angle-down")
 
-            div(class="workoutDisplay collapse" id="workoutCollapse-slug")
-                ul(class="list-group list-group-flush")
-
-            p
                 button(type="button" class="btn btn-light exCollapseButton" data-toggle="collapse" data-target="#exerciseCollapse-slug") Exercises
                     i(class="fa fa-angle-down")
+
+            div(class="workoutDisplay collapse" id="workoutCollapse-slug")
+                ul(class="list-group list-group-flush")
 
             div(class="exerciseDisplay collapse" id="exerciseCollapse-slug")
 
@@ -167,3 +170,8 @@ mixin workout-card(admin=true)
                 span(class="badge badge-pill badge-light fav-counter") 0
 
             p(class="workoutAuthor") Author
+
+            if (admin)
+                hr(class="my-3")
+                div(class="text-center footer")
+                    button(class="btn btn-info setWotdButton" data-toggle="modal" data-target="#setWotdModal") Set Workout of the Day

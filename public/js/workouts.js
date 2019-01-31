@@ -363,6 +363,7 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $wkCard = $('#workout-card-template').clone(true);
         $wkCard.removeAttr('id');
         $wkCard.attr('data-slug', wk.slug);
+        $wkCard.find('.setWotdButton').attr('data-id', wk.slug);
 
         $.each(wk.routine, function(i, item) {
             switch (item.type) {
@@ -419,7 +420,33 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
         $wkCard.find('.wkCollapseButton').attr('data-target', "#" + wkDataTarget);
         $wkCard.find('.workoutDisplay').attr('id', wkDataTarget);
 
+        if (wk.wotd === true) {
+            $wkCard.find('.setWotdButton').remove();
+            $wotd = $(document.createElement('p'));
+            $wotd.addClass('lead');
+            $icon = $(document.createElement('i'));
+            $icon.addClass('fas fa-calendar-day');
+            $wotd.append($icon);
+            $icon.after('Workout of the Day');
+            $wkCard.find('.footer').append($wotd);
+            
+            $wotdCard = $wkCard.clone(true);
+            
+            var exDataTarget = "exerciseCollapse-wotd";
+            var wkDataTarget = "workoutCollapse-wotd";
+
+            $wotdCard.find('.exCollapseButton').attr('data-target', "#" + exDataTarget);
+            $wotdCard.find('.exerciseDisplay').attr('id', exDataTarget);
+
+            $wotdCard.find('.wkCollapseButton').attr('data-target', "#" + wkDataTarget);
+            $wotdCard.find('.workoutDisplay').attr('id', wkDataTarget);
+
+            $('#workoutOfTheDay').append($wotdCard);
+            $wotdCard.show();
+        }
+
         $('#workoutResults').append($wkCard);
+
         $wkCard.show();
     });
 };
@@ -479,6 +506,31 @@ $('.add-btn').click(function() {
 $('.add-btn-group > button').click(function() {
     $(this).parent().fadeToggle('fast');
     $(this).parent().prev('.add-btn').fadeToggle('fast');
+});
+
+$('#setWotdModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget) 
+    var slug = button.data('id');
+    var modal = $(this)
+    modal.find('#setWotdSlug').val(slug);
+});
+
+$('#setWotdConfirmButton').click(function(event) {
+    var modal = $('#setWotdModal');
+    var slug = modal.find('#setWotdSlug').val();
+
+    $.ajax({
+        type: 'PUT',
+        url: '/workout/wotd',
+        data: {
+            slug: slug
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        modal.modal('hide');
+        fetchWorkouts(populateWorkoutResults);
+    }).fail(function(jqXHR, textStatus, err) {
+
+    });
 });
 
 fetchWorkouts(populateWorkoutResults);

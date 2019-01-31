@@ -67,6 +67,16 @@ router.post('/', (req, res) => {
 });
 
 
+router.put('/wotd', (req, res) => {
+    Workout.setWorkoutOfTheDay(req.body.slug, (err, status) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).send();
+    });
+});
+
+
 router.delete('/:slug', (req, res) => {
     Workout.deleteWorkout(req.params.slug, (err, status) => {
         if (err) {

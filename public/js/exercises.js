@@ -1,5 +1,4 @@
 function fetchExercises() {
-    console.log('fetching exercises');
     var args = Array.from(arguments);
     $.ajax({
         type: 'GET',

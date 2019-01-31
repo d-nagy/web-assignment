@@ -376,13 +376,42 @@ ul ul a {
     text-align: center;
     font-size: 1.5em;
     line-height: 1.5em;
+    margin: 0 .2em;
 }
 
-.rating span:hover ~ span label,
-.rating span:hover label,
-.rating span.checked label,
-.rating span.checked ~ span label {
-    color:#ffdb4c;
+.rating #one:hover ~ span label,
+.rating #one:hover label,
+.rating #one.checked label,
+.rating #one.checked ~ span label {
+    color: #37ce1f;
+}
+
+.rating #two:hover ~ span label,
+.rating #two:hover label,
+.rating #two.checked label,
+.rating #two.checked ~ span label {
+    color: #b8ce1f;
+}
+
+.rating #three:hover ~ span label,
+.rating #three:hover label,
+.rating #three.checked label,
+.rating #three.checked ~ span label {
+    color: #ffdb4c;
+}
+
+.rating #four:hover ~ span label,
+.rating #four:hover label,
+.rating #four.checked label,
+.rating #four.checked ~ span label {
+    color: #ff923f;
+}
+
+.rating #five:hover ~ span label,
+.rating #five:hover label,
+.rating #five.checked label,
+.rating #five.checked ~ span label {
+    color: #e41c1c;
 }
 
 /* Exercise cards */
@@ -435,9 +464,21 @@ ul ul a {
     font-style: italic;
 }
 
+.workout-card .footer .lead {
+    margin-bottom: 0;
+}
+
+.workout-card .footer .lead i {
+    margin-right: .5em;
+    color: #7386D5;
+}
+
+.wkCollapseButton {
+    margin-right: 1em;
+}
+
 .exCollapseButton i,
-.wkCollapseButton i,
-.userStatsCollapseButton i {
+.wkCollapseButton i {
     margin-left: .5em;
 }
 
@@ -467,6 +508,18 @@ ul ul a {
 
 .ratings .badge {
     padding: .2em;
+}
+
+.rating-static .fa-circle {
+    margin: 0 2px;
+}
+
+.rating-static .fa-circle:first-of-type {
+    margin-left: 1em;
+}
+
+.rating-static {
+    color: grey;
 }
 
 /* Main columns */
