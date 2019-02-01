@@ -78,6 +78,10 @@ router.post('/', (req, res) => {
 });
 
 router.put('/promote', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     Person.promotePerson(req.body.username, req.body.role, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
@@ -87,6 +91,10 @@ router.put('/promote', (req, res) => {
 });
 
 router.put('/demote', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+    
     Person.demotePerson(req.body.username, (err, status) => {
         if (err) {
             res.status(status).send(err.message);

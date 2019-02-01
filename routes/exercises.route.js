@@ -22,6 +22,10 @@ router.get('/:slug', (req, res) => {
 
 
 router.post('/', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     let exercise = {
         name: req.body.exName,
         description: req.body.exDescription,
@@ -38,6 +42,10 @@ router.post('/', (req, res) => {
 
 
 router.delete('/:slug', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     Exercise.deleteExercise(req.params.slug, (err, status) => {
         if (err) {
             res.status(status).send(err.message);

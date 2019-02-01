@@ -178,6 +178,10 @@ router.get('/complete', (req, res) => {
 
 
 router.post('/', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     let formData = JSON.parse(req.body.formData);
     let wkData = JSON.parse(req.body.wkData);
 
@@ -198,6 +202,10 @@ router.post('/', (req, res) => {
 
 
 router.put('/wotd', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     Workout.setWorkoutOfTheDay(req.body.slug, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
@@ -208,6 +216,10 @@ router.put('/wotd', (req, res) => {
 
 
 router.put('/setfav', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     Workout.setFavourite(req.body.slug, req.user.username, req.body.favourite, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
@@ -218,6 +230,10 @@ router.put('/setfav', (req, res) => {
 
 
 router.put('/complete', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     Workout.completeWorkout(req.body.slug, req.user.username, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
@@ -228,6 +244,10 @@ router.put('/complete', (req, res) => {
 
 
 router.delete('/:slug', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(403).send();
+    }
+
     Workout.deleteWorkout(req.params.slug, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
