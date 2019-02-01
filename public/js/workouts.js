@@ -77,6 +77,9 @@ function completeWorkout(slug) {
 
 
 function createWorkoutCard(i, wk, exercises) {
+    var wkExercises = [];
+    var lookup = {};
+
     $wkCard = $('#workout-card-template').clone(true);
     $wkCard.removeAttr('id');
     $wkCard.attr('data-slug', wk.slug);
@@ -95,6 +98,11 @@ function createWorkoutCard(i, wk, exercises) {
                     return element.slug === item.slug; 
                 });
 
+                if (!lookup[ex.slug]) {
+                    wkExercises.push(ex);
+                    lookup[ex.slug] = 1;
+                }
+
                 $li.find('h6').html(ex.name + ' &times ' + item.quantity + ' ' + item.units);
                 $li.find('.card-title').html(ex.name);
                 $li.find('.card-text').html(ex.description);
@@ -102,6 +110,35 @@ function createWorkoutCard(i, wk, exercises) {
                 break;
             case "exercise-block":
                 $li = $('#ex-block-li-template').clone(true);
+                $li.find('h6').html(item.title + ' &times ' + item.reps + ' reps');
+                $.each(item.exercises, function(i, ex) {
+                    switch (ex.type) {
+                        case "rest":
+                            $subli = $('#rest-li-template').clone(true);
+                            $subli.find('h6').html('Rest for ' + ex.duration + ' seconds');
+                            break;
+                        case "exercise-single":
+                            $subli = $('#ex-single-li-template').clone(true);
+
+                            var e = exercises.find(function(element) {
+                                return element.slug === ex.slug; 
+                            });
+
+                            if (!lookup[e.slug]) {
+                                wkExercises.push(e);
+                                lookup[e.slug] = 1;
+                            }
+
+                            $subli.find('h6').html(e.name + ' &times ' + ex.quantity + ' ' + ex.units);
+                            $subli.find('.card-title').html(e.name);
+                            $subli.find('.card-text').html(e.description);
+                            setStarRating($subli, e.difficulty);
+                            break;
+                    }
+                    $subli.removeAttr('id');
+                    $li.append($subli);
+                    $subli.show();
+                });
                 break;
         }
 
@@ -115,7 +152,7 @@ function createWorkoutCard(i, wk, exercises) {
     $wkCard.find('.fav-counter').html(wk.favourites);
     $wkCard.find('.workoutAuthor').html('Created by ' + wk.author);
 
-    $.each(exercises, function(i, ex) {
+    $.each(wkExercises, function(i, ex) {
         $card = $('#ex-card-li-template').clone(true);
         $card.removeAttr('id');
 
@@ -306,43 +343,46 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
 (function() {
     window.addEventListener('load', function() {
         form = document.getElementById('addWorkoutForm');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
 
-            var formValid = form.checkValidity();
-            if (formValid === false) {
-                form.classList.add('was-validated');
-            }
-
-            if (checkValidWorkout() !== false && formValid !== false) {
-                var formArray = $(form).serializeArray();
-                var formData = {};
-                for (var i = 0; i < formArray.length; i++){
-                    formData[formArray[i]['name']] = formArray[i]['value'];
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+    
+                var formValid = form.checkValidity();
+                if (formValid === false) {
+                    form.classList.add('was-validated');
                 }
-
-                var postData = {
-                    formData: JSON.stringify(formData),
-                    wkData: JSON.stringify(serializeWorkout())
+    
+                if (checkValidWorkout() !== false && formValid !== false) {
+                    var formArray = $(form).serializeArray();
+                    var formData = {};
+                    for (var i = 0; i < formArray.length; i++){
+                        formData[formArray[i]['name']] = formArray[i]['value'];
+                    }
+    
+                    var postData = {
+                        formData: JSON.stringify(formData),
+                        wkData: JSON.stringify(serializeWorkout())
+                    }
+    
+                    $.ajax({
+                        type: 'POST',
+                        url: form.getAttribute('action'),
+                        data: postData,
+                    }).done(function(data, textStatus, jqXHR) {
+                        $(form).children('.alert-danger').hide();
+                        $(form).children('.alert-success').html('Workout added!').show().delay(5000).fadeOut(200);
+                        $(form).find('input:text, textarea').val('');
+                        clearWorkout();
+                        fetchWorkouts(populateWorkoutResults);
+                    }).fail(function(jqXHR, textStatus, err) {
+                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                    });
                 }
-
-                $.ajax({
-                    type: 'POST',
-                    url: form.getAttribute('action'),
-                    data: postData,
-                }).done(function(data, textStatus, jqXHR) {
-                    $(form).children('.alert-danger').hide();
-                    $(form).children('.alert-success').html('Workout added!').show().delay(5000).fadeOut(200);
-                    $(form).find('input:text, textarea').val('');
-                    clearWorkout();
-                    fetchWorkouts(populateWorkoutResults);
-                }).fail(function(jqXHR, textStatus, err) {
-                    $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
-                });
-            }
-            
-        }, false);
+                
+            }, false);    
+        }
     }, false);
 })();
 

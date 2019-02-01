@@ -23,11 +23,13 @@ $('#confirmRemove').click(function() {
             var index = columnGrids.indexOf(gridToRemove);
             if (index > -1) { columnGrids.splice(index, 1); }
         }
+        $('#removeBlockModal').modal('hide');
+        $(itemToRemove).remove();
     } else if ($(itemToRemove).hasClass('exercise-card')) {
         deleteExercise($(itemToRemove).attr('data-slug'));
     } else if ($(itemToRemove).hasClass('workout-card')) {
         deleteWorkout($(itemToRemove).attr('data-slug'));
-    };
+    } 
 });
 
 function setStarRating(container, value) {

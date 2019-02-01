@@ -73,11 +73,11 @@ const addExercise = (data, done) => {
 
 const deleteExercise = (slug, done) => {
     let workouts = Workout.getWorkouts();
-    let exercises = getExercisesForWorkouts(workouts);
+    let exercisesForWorkouts = getExercisesForWorkouts(workouts);
 
     getExercise(slug, (err, status, result) => {
         if (!err) {
-            if (exercises.find(ex => ex === result)) {
+            if (exercisesForWorkouts.find(ex => ex === result)) {
                 return done(Error('Exercise is used in workouts'), 400);
             }
             exercises.splice(exercises.indexOf(result), 1);

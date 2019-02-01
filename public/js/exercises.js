@@ -69,37 +69,39 @@ function populateExerciseResults(data, textStatus, jqXHR) {
     window.addEventListener('load', function() {
         var form = document.getElementById('addExerciseForm');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (form.checkValidity() !== false) {
-                $.ajax({
-                    type: 'POST',
-                    url: form.getAttribute('action'),
-                    data: $(form).serialize(),
-                }).done(function(data, textStatus, jqXHR) {
-                    $(form).children('.alert-danger').hide();
-                    $(form).children('.alert-success').html('Exercise added!').show().delay(5000).fadeOut(200);
-                    $(form).find('input:text, textarea').val('');
-                    $(form).find('input:radio').removeAttr('checked').removeAttr('selected');
-                    $(form).find('.rating span').removeClass('checked selected');
-                    $(form).find('.rating i').removeClass('fas').addClass('far');
-                    form.classList.remove('was-validated');
-                    fetchExercises(populateExerciseResults);
-                }).fail(function(jqXHR, textStatus, err) {
-                    $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
-                });
-            } else {
-                form.classList.add('was-validated');
-                if (!$(form).find('input[name=exDifficulty]:checked').val()) {
-                    $(form).find('.rating .invalid-feedback').show();
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+    
+                if (form.checkValidity() !== false) {
+                    $.ajax({
+                        type: 'POST',
+                        url: form.getAttribute('action'),
+                        data: $(form).serialize(),
+                    }).done(function(data, textStatus, jqXHR) {
+                        $(form).children('.alert-danger').hide();
+                        $(form).children('.alert-success').html('Exercise added!').show().delay(5000).fadeOut(200);
+                        $(form).find('input:text, textarea').val('');
+                        $(form).find('input:radio').removeAttr('checked').removeAttr('selected');
+                        $(form).find('.rating span').removeClass('checked selected');
+                        $(form).find('.rating i').removeClass('fas').addClass('far');
+                        form.classList.remove('was-validated');
+                        fetchExercises(populateExerciseResults);
+                    }).fail(function(jqXHR, textStatus, err) {
+                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                    });
                 } else {
-                    $(form).find('.rating .invalid-feedback').hide();
+                    form.classList.add('was-validated');
+                    if (!$(form).find('input[name=exDifficulty]:checked').val()) {
+                        $(form).find('.rating .invalid-feedback').show();
+                    } else {
+                        $(form).find('.rating .invalid-feedback').hide();
+                    }
                 }
-            }
-
-        }, false);
+    
+            }, false);    
+        }
     }, false);
 })();
 
