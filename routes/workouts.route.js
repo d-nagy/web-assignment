@@ -8,14 +8,14 @@ const CompletedWorkout = require('../models/completed_workout.model');
 const router = express.Router();
 
 
-function isToday(date) {
+const isToday = (date) => {
     let today = new Date();
     return date.getFullYear() === today.getFullYear() &&
         date.getMonth() === today.getMonth() &&
         date.getDate() === today.getDate();
 }
 
-function timeSince(date) {
+const timeSince = (date) => {
     var seconds = Math.floor((new Date() - date) / 1000);
 
     var interval = Math.floor(seconds / 31536000);
@@ -47,41 +47,8 @@ function timeSince(date) {
 };
 
 
-function getExercisesForWorkouts(workouts) {
-    let lookup = {};
-    let exercises = []
 
-    for (var workout, i = 0; workout = workouts[i++];) {
-        for (var block, j = 0; block = workout.routine[j++];) {
-            if (block.type === 'exercise-single') {
-                if (!(block.slug in lookup)) {
-                    lookup[block.slug] = 1;
-                    Exercise.getExercise(block.slug, (err, status, result) => {
-                        if (!err) {
-                            exercises.push(result);
-                        }
-                    });
-                }
-            } else if (block.type === 'exercise-block') {
-                for (var item, k = 0; item = block.exercises[k++];) {
-                    if (item.type === 'exercise-single' && !(item.slug in lookup)) {
-                        lookup[item.slug] = 1;
-                        Exercise.getExercise(item.slug, (err, status, result) => {
-                            if (!err) {
-                                exercises.push(result);
-                            }
-                        });
-                    }
-                }
-            }
-        }
-    }
-
-    return exercises;
-}
-
-
-function addWorkoutStats(workouts, favourites, completedWorkouts) {
+const addWorkoutStats = (workouts, favourites, completedWorkouts) => {
     let workoutsWithStats = []
 
     workouts.forEach(workout => {
@@ -120,7 +87,7 @@ router.get('/', (req, res) => {
     let completedWorkouts = CompletedWorkout.getCompletedWorkoutsByUsername(req.user.username);
 
     let workoutsWithStats = addWorkoutStats(workouts, favourites, completedWorkouts);
-    let exercises = getExercisesForWorkouts(workouts);
+    let exercises = Exercise.getExercisesForWorkouts(workouts);
 
     let data = {
         workouts: workoutsWithStats,
@@ -217,7 +184,7 @@ router.post('/', (req, res) => {
     let workout = {
         title: formData.wkTitle,
         description: formData.wkDescription,
-        author: formData.username,
+        author: req.user.username,
         routine: wkData
     };
 

@@ -35,10 +35,13 @@ function deleteExercise(slug) {
         url: '/exercise/' + slug,
     }).done(function(data, textStatus, jqXHR) {
         fetchExercises(populateExerciseResults);
+        $('#removeBlockModal').modal('hide');
     }).fail(function(jqXHR, textStatus, err) {
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(err);
+        $('#removeBlockModal .modal-body').html('Cannot delete exercise: ' + jqXHR.responseText);
+        $('#removeBlockModal .btn-danger').addClass('disabled');
+        setTimeout(function() {$('#removeBlockModal').modal('hide');}, 3000);
+        $('#removeBlockModal .btn-danger').removeClass('disabled');
+        $('#removeBlockModal .modal-body').html('Are you sure you want to remove this item?');
     });
 };
 
@@ -64,42 +67,39 @@ function populateExerciseResults(data, textStatus, jqXHR) {
 
 (function() {
     window.addEventListener('load', function() {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
+        var form = document.getElementById('addExerciseForm');
 
-                if (form.checkValidity() !== false) {
-                    $.ajax({
-                        type: 'POST',
-                        url: form.getAttribute('action'),
-                        data: $(form).serialize(),
-                    }).done(function(data, textStatus, jqXHR) {
-                        $(form).children('.alert-danger').hide();
-                        $(form).children('.alert-success').html('Exercise added!').show().delay(5000).fadeOut(200);
-                        $(form).find('input:text, textarea').val('');
-                        $(form).find('input:radio').removeAttr('checked').removeAttr('selected');
-                        $(form).find('.rating span').removeClass('checked selected');
-                        $(form).find('.rating i').removeClass('fas').addClass('far');
-                        form.classList.remove('was-validated');
-                        fetchExercises(populateExerciseResults);
-                    }).fail(function(jqXHR, textStatus, err) {
-                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
-                    });
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (form.checkValidity() !== false) {
+                $.ajax({
+                    type: 'POST',
+                    url: form.getAttribute('action'),
+                    data: $(form).serialize(),
+                }).done(function(data, textStatus, jqXHR) {
+                    $(form).children('.alert-danger').hide();
+                    $(form).children('.alert-success').html('Exercise added!').show().delay(5000).fadeOut(200);
+                    $(form).find('input:text, textarea').val('');
+                    $(form).find('input:radio').removeAttr('checked').removeAttr('selected');
+                    $(form).find('.rating span').removeClass('checked selected');
+                    $(form).find('.rating i').removeClass('fas').addClass('far');
+                    form.classList.remove('was-validated');
+                    fetchExercises(populateExerciseResults);
+                }).fail(function(jqXHR, textStatus, err) {
+                    $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                });
+            } else {
+                form.classList.add('was-validated');
+                if (!$(form).find('input[name=exDifficulty]:checked').val()) {
+                    $(form).find('.rating .invalid-feedback').show();
                 } else {
-                    form.classList.add('was-validated');
-                    if (!$(form).find('input[name=exDifficulty]:checked').val()) {
-                        $(form).find('.rating .invalid-feedback').show();
-                    } else {
-                        $(form).find('.rating .invalid-feedback').hide();
-                    }
+                    $(form).find('.rating .invalid-feedback').hide();
                 }
+            }
 
-            }, false);
-        });
+        }, false);
     }, false);
 })();
 

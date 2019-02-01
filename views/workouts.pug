@@ -16,8 +16,6 @@ block sub_content
                 br
 
                 form(action="/workout" method="POST" id="addWorkoutForm" class="needs-validation custom-form" novalidate)
-                    input(type="hidden" name="username" val="#{user.username}")
-                    
                     div(class="form-group")
                         label(for="wkTitleInput") Title
                         input(type="text" class="form-control" id="wkTitleInput" name="wkTitle" placeholder="Enter title" required)
@@ -77,6 +75,7 @@ block scripts
 
     script(src="../js/script.js")
     script(src="../js/workouts.js")
+    script(src="../js/workout_grid.js")
     script(src="../js/exercises.js")
 
     script.

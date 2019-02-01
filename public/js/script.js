@@ -1,6 +1,10 @@
 var itemToRemove;
 var gridToRemoveFrom;
 
+var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content:not(#ex-block-template-content)'));
+var columnGrids = [];
+var boardGrid;
+
 $(document).on('shown.bs.modal', '#removeBlockModal', function(event) {
     var triggerElement = event.relatedTarget;
     itemToRemove = triggerElement.parentNode.parentNode;
@@ -24,8 +28,6 @@ $('#confirmRemove').click(function() {
     } else if ($(itemToRemove).hasClass('workout-card')) {
         deleteWorkout($(itemToRemove).attr('data-slug'));
     };
-
-    $(itemToRemove).remove();
 });
 
 function setStarRating(container, value) {

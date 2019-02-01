@@ -1,314 +1,3 @@
-var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content:not(#ex-block-template-content)'));
-var columnGrids = [];
-var boardGrid;
-
-function createColumnGrid(container) {
-    // Instantiate column grid.
-    var grid = new Muuri(container, {
-        items: '.board-item',
-        layoutDuration: 400,
-        layoutEasing: 'ease',
-        dragEnabled: true,
-        dragSort: function () {
-            return columnGrids;
-        },
-        dragSortInterval: 0,
-        dragSortPredicate: function(item, e) {
-            var result = Muuri.ItemDrag.defaultSortPredicate(item, {
-                threshold: 20
-            });
-
-            if (!item.getElement().classList.contains('board-column')) {
-                var itemRect = item.getElement().getBoundingClientRect();
-                var i = 0;
-                for (i; i < columnGrids.length; i++) {
-                    var grid = columnGrids[i];
-                    if (grid === boardGrid) { continue; }
-
-                    var block = grid.getElement().parentNode;
-                    var blockRect = block.getBoundingClientRect();
-                    var overlap = !(itemRect.bottom <  blockRect.top ||
-                                    itemRect.top > blockRect.bottom);
-                    if (overlap) {
-                        var delta = (itemRect.top > blockRect.top) ? 
-                                    blockRect.bottom - itemRect.top : 
-                                    itemRect.bottom - blockRect.top;
-                        
-                        //- console.log(delta/item.getHeight());
-
-                        if (delta >= item.getHeight() * 0.6) {
-                            return {
-                                index: result.index,
-                                grid: grid
-                            };
-                        }
-                    }
-                }
-            }
-
-            return {
-                index: result.index,
-                grid: grid
-            };
-        },
-        dragStartPredicate: {
-            handle: '.drag-handle'
-        },
-        dragContainer: document.body,
-        dragAxis: 'y',
-        dragReleaseDuration: 400,
-        dragReleaseEasing: 'ease'
-    })
-    .on('dragStart', function (item) {
-        // Let's set fixed widht/height to the dragged item
-        // so that it does not stretch unwillingly when
-        // it's appended to the document body for the
-        // duration of the drag.
-        item.getElement().style.width = item.getWidth() + 'px';
-        item.getElement().style.height = item.getHeight() + 'px';
-    })
-    .on('dragReleaseEnd', function (item) {
-        // Let's remove the fixed width/height from the
-        // dragged item now that it is back in a grid
-        // column and can freely adjust to it's
-        // surroundings.
-        item.getElement().style.width = '';
-        item.getElement().style.height = '';
-        // Just in case, let's refresh the dimensions of all items
-        // in case dragging the item caused some other items to
-        // be different size.
-        columnGrids.forEach(function (grid) {
-            grid.refreshItems();
-        });
-    })
-    .on('layoutStart', function () {
-        // Let's keep the board grid up to date with the
-        // dimensions changes of column grids.
-        boardGrid.refreshItems().layout();
-    })
-    .on('receive', function () {
-        if (grid.getItems().length === 1) {
-            var $buttons = $(grid.getElement()).siblings('.add-btn-container').find('button');
-            $buttons.removeClass('btn-outline-danger').addClass('btn-outline-dark');
-        }
-    });
-
-    // Add the column grid reference to the column grids
-    // array, so we can access it later on.
-    columnGrids.push(grid);
-};
-
-// Define the column grids so we can drag those
-// items around.
-itemContainers.forEach(createColumnGrid);
-
-// Instantiate the board grid so we can drag those
-// columns around.
-boardGrid = new Muuri('.board', {
-    items: '.board-column, .board-item',
-    layoutDuration: 400,
-    layoutEasing: 'ease',
-    dragEnabled: true,
-    dragSort: function (item) {
-        if (item.getElement().classList.contains('board-column')) {
-            return [boardGrid];
-        }
-        return columnGrids;
-    },
-    dragSortInterval: 0,
-    dragSortPredicate: function(item, e) {
-        var result = Muuri.ItemDrag.defaultSortPredicate(item, {
-            threshold: 60,
-        });
-
-        if (!item.getElement().classList.contains('board-column')) {
-            var itemRect = item.getElement().getBoundingClientRect();
-            var i = 0;
-            for (i; i < columnGrids.length; i++) {
-                var grid = columnGrids[i];
-                if (grid === boardGrid) { continue; }
-
-                var block = grid.getElement().parentNode;
-                var blockRect = block.getBoundingClientRect();
-                var overlap = !(itemRect.bottom <  blockRect.top ||
-                                itemRect.top > blockRect.bottom);
-                if (overlap) {
-                    var delta = (itemRect.top > blockRect.top) ? 
-                                blockRect.bottom - itemRect.top : 
-                                itemRect.bottom - blockRect.top;
-                    
-                    if (delta >= item.getHeight() * 0.6) {
-                        return {
-                            index: result.index,
-                            grid: grid
-                        };
-                    }
-                }
-            }
-        }
-
-        return result;
-    },
-    dragStartPredicate: {
-        handle: '.board-column-header>.drag-handle, .board>.board-item>.board-item-content>.drag-handle'
-    },
-    dragAxis: 'y',
-    dragReleaseDuration: 400,
-    dragReleaseEasing: 'ease'
-})
-.on('dragStart', function (item) {
-    // Let's set fixed widht/height to the dragged item
-    // so that it does not stretch unwillingly when
-    // it's appended to the document body for the
-    // duration of the drag.
-    item.getElement().style.width = item.getWidth() + 'px';
-    item.getElement().style.height = item.getHeight() + 'px';
-})
-.on('dragReleaseEnd', function (item) {
-    // Let's remove the fixed width/height from the
-    // dragged item now that it is back in a grid
-    // column and can freely adjust to it's
-    // surroundings.
-    item.getElement().style.width = '';
-    item.getElement().style.height = '';
-    // Just in case, let's refresh the dimensions of all items
-    // in case dragging the item caused some other items to
-    // be different size.
-    columnGrids.forEach(function (grid) {
-        grid.refreshItems();
-    });
-})
-.on('receive', function () {
-    if (boardGrid.getItems().length === 1) {
-        var $buttons = $(boardGrid.getElement()).siblings('.add-btn-container').find('button');
-        $buttons.removeClass('btn-outline-danger').addClass('btn-outline-dark');
-    }
-});
-
-columnGrids.push(boardGrid);
-
-$('.add-ex').click(function() {
-    $ex = $('#ex-template').clone(true);
-    $ex.removeAttr('id');
-    var source = this.parentNode.parentNode;
-    var grid = columnGrids.filter(function (g) {
-        return g.getElement().nextSibling === source;
-    })[0];
-    grid.add($ex[0]);
-    grid.show($ex[0]);
-    $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
-});
-
-$('.add-ex-block').click(function() {
-    $exBlock = $('#ex-block-template').clone(true);
-    $exBlock.removeAttr('id');
-    var source = this.parentNode.parentNode;
-    var grid = columnGrids.filter(function (g) {
-        return g.getElement().nextSibling === source;
-    })[0];
-    grid.add($exBlock[0]);
-    grid.show($exBlock[0]);
-    $content = $exBlock.find('.board-column-content');
-    $content.removeAttr('id');
-    createColumnGrid($content[0]);
-    $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
-});
-
-$('.add-rest').click(function() {
-    $rest = $('#rest-template').clone(true);
-    $rest.removeAttr('id');
-    var source = this.parentNode.parentNode;
-    var grid = columnGrids.filter(function (g) {
-        return g.getElement().nextSibling === source;
-    })[0];
-    grid.add($rest[0]);
-    grid.show($rest[0]);
-    $(this).parent().parent().parent().find('button').removeClass('btn-outline-danger').addClass('btn-outline-dark');
-});
-
-function checkValidWorkout() {
-    var allSetsNotEmpty = true;
-
-    function checkSetNotEmpty(grid) {
-        var isEmpty = grid.getItems().length < 1;
-        if (isEmpty) {
-            allSetsNotEmpty = false;
-            var $buttons = $(grid.getElement()).siblings('.add-btn-container').find('button');
-            $buttons.removeClass('btn-outline-dark').addClass('btn-outline-danger');
-        }
-    }
-
-    columnGrids.forEach(checkSetNotEmpty);
-
-    var validForms = true;
-    $('.workout-creator form').each(function() {
-        var form = $(this)[0];
-        if (form.checkValidity() === false) {
-            form.classList.add('was-validated');
-            validForms = false;
-        }
-    });
-
-    if (!(allSetsNotEmpty && validForms)) { return false; }
-
-    return true;
-};
-
-function serializeWorkout() {
-    function serializeGrid(grid) {
-        var items = grid.getItems();
-        var json = [];
-
-        items.forEach(function(item) {
-            var $el = $(item.getElement());
-
-            if ($el.hasClass('exercise-single')) {
-                var ex = {
-                    type: 'exercise-single',
-                    slug: $el.find('select[name=inputExercise]').val(),
-                    quantity: $el.find('input[name=quantity]').val(),
-                    units: $el.find('input:radio:checked').val()
-                };
-                json.push(ex);
-            } else if ($el.hasClass('rest')) {
-                var rest = {
-                    type: 'rest',
-                    duration: $el.find('input[name=inputRest]').val()
-                };
-                json.push(rest);
-            } else {
-                var gridToSerialize = columnGrids.filter(function (g) {
-                    return $el[0].contains(g.getElement());
-                })[0];
-
-                var block = {
-                    type: 'exercise-block',
-                    title: $el.find('input[name=sectionTitle]').val(),
-                    reps: $el.find('input[name=sectionReps]').val(),
-                    exercises: serializeGrid(gridToSerialize)
-                }
-
-                json.push(block);
-            }
-        });
-        return json;
-    };
-
-    return serializeGrid(boardGrid);
-};
-
-function clearWorkout() {
-    boardGrid.getItems().forEach(function(item) {
-        boardGrid.remove(item, {removeElements: true});
-    });
-
-    columnGrids.forEach(function(grid) {
-        if (grid !== boardGrid) {
-            grid.destroy(true);
-        }
-    });
-};
-
 function populateExerciseList(data, textStatus, jqXHR) {
     $('.exercise-single select').children().not(':first-child').remove();
 
@@ -340,13 +29,16 @@ function deleteWorkout(slug) {
         type: 'DELETE',
         url: '/workout/' + slug,
     }).done(function(data, textStatus, jqXHR) {
+        $('#removeBlockModal').modal('hide');
         fetchWorkouts(populateWorkoutResults);
         fetchMostRecentWorkout();
-        fetchMostCompletedWorkout()
+        fetchMostCompletedWorkout();
     }).fail(function(jqXHR, textStatus, err) {
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(err);
+        $('#removeBlockModal .modal-body').html('Cannot delete workout: ' + jqXHR.responseText);
+        $('#removeBlockModal .btn-danger').addClass('disabled');
+        setTimeout(function() {$('#removeBlockModal').modal('hide');}, 3000);
+        $('#removeBlockModal .btn-danger').removeClass('disabled');
+        $('#removeBlockModal .modal-body').html('Are you sure you want to remove this item?');
     });
 };
 
@@ -613,48 +305,44 @@ function populateWorkoutResults(data, textStatus, jqXHR) {
 
 (function() {
     window.addEventListener('load', function() {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
+        form = document.getElementById('addWorkoutForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
 
-                var formValid = form.checkValidity();
-                if (formValid === false) {
-                    form.classList.add('was-validated');
+            var formValid = form.checkValidity();
+            if (formValid === false) {
+                form.classList.add('was-validated');
+            }
+
+            if (checkValidWorkout() !== false && formValid !== false) {
+                var formArray = $(form).serializeArray();
+                var formData = {};
+                for (var i = 0; i < formArray.length; i++){
+                    formData[formArray[i]['name']] = formArray[i]['value'];
                 }
 
-                if (checkValidWorkout() !== false && formValid !== false) {
-                    var formArray = $(form).serializeArray();
-                    var formData = {};
-                    for (var i = 0; i < formArray.length; i++){
-                        formData[formArray[i]['name']] = formArray[i]['value'];
-                    }
-
-                    var postData = {
-                        formData: JSON.stringify(formData),
-                        wkData: JSON.stringify(serializeWorkout())
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: form.getAttribute('action'),
-                        data: postData,
-                    }).done(function(data, textStatus, jqXHR) {
-                        $(form).children('.alert-danger').hide();
-                        $(form).children('.alert-success').html('Workout added!').show().delay(5000).fadeOut(200);
-                        $(form).find('input:text, textarea').val('');
-                        clearWorkout();
-                        fetchWorkouts(populateWorkoutResults);
-                    }).fail(function(jqXHR, textStatus, err) {
-                        $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
-                    });
+                var postData = {
+                    formData: JSON.stringify(formData),
+                    wkData: JSON.stringify(serializeWorkout())
                 }
-                
-            }, false);
-        });
+
+                $.ajax({
+                    type: 'POST',
+                    url: form.getAttribute('action'),
+                    data: postData,
+                }).done(function(data, textStatus, jqXHR) {
+                    $(form).children('.alert-danger').hide();
+                    $(form).children('.alert-success').html('Workout added!').show().delay(5000).fadeOut(200);
+                    $(form).find('input:text, textarea').val('');
+                    clearWorkout();
+                    fetchWorkouts(populateWorkoutResults);
+                }).fail(function(jqXHR, textStatus, err) {
+                    $(form).children('.alert-danger').html(jqXHR.responseText).show().delay(5000).fadeOut(200);
+                });
+            }
+            
+        }, false);
     }, false);
 })();
 
