@@ -29,7 +29,7 @@ a, a:hover, a:focus {
 }
 
 .scrollable {
-    max-height: 55em;
+    max-height: 50em;
     overflow: auto;
 }
 
