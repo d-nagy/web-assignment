@@ -449,7 +449,6 @@ function fetchMostCompletedWorkout() {
         url: '/workout/complete',
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR) {
-        console.log(data);
         $('#noCompleted').nextAll().remove();
         if (data.workout.slug) {
             $wkCard = createWorkoutCard('completed', data.workout, data.exercises);

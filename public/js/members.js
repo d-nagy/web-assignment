@@ -131,8 +131,6 @@ $('#promoteUserSubmit').click(function(event) {
 $('#demoteUserSubmit').click(function(event) {
     var modal = $('#demoteUserModal');
     var username = modal.find('#demoteUserUsername').val();
-
-    console.log(username);
     
     $.ajax({
         type: 'PUT',
