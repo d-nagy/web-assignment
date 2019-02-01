@@ -121,7 +121,7 @@ $('#promoteUserSubmit').click(function(event) {
             }
         }).done(function(data, textStatus, jqXHR) {
             modal.modal('hide');
-            populateMemberResults();
+            fetchMembers(populateMemberResults);
         }).fail(function(jqXHR, textStatus, err) {
 
         });
@@ -142,7 +142,7 @@ $('#demoteUserSubmit').click(function(event) {
         }
     }).done(function(data, textStatus, jqXHR) {
         modal.modal('hide');
-        populateMemberResults();
+        fetchMembers(populateMemberResults);
     }).fail(function(jqXHR, textStatus, err) {
          
     });

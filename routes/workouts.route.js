@@ -124,7 +124,7 @@ router.get('/recent', (req, res) => {
                     }
                 });
 
-                let exercises = getExercisesForWorkouts([result]);
+                let exercises = Exercise.getExercisesForWorkouts([result]);
                 data.exercises = exercises;
             }
             result.time_since = time_since;
@@ -162,7 +162,7 @@ router.get('/complete', (req, res) => {
                     }
                 });
 
-                let exercises = getExercisesForWorkouts([result]);
+                let exercises = Exercise.getExercisesForWorkouts([result]);
 
                 data.exercises = exercises;
             }

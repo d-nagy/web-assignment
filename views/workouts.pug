@@ -4,7 +4,7 @@ include mixins.pug
 
 block sub_content
     div(class="row" id="workouts")
-        div(class="col-lg-6 main-col")
+        div(class="col-lg-8 main-col")
             h2(class="mainTitle") Create Workout
             div(class="content-col")
                 div(class="workout-creator")
@@ -30,7 +30,8 @@ block sub_content
 
                     button(type="submit" class="btn btn-lg btn-block custom-submit") Submit
 
-        div(class="col-lg-6 main-col")
+    div(class="row")
+        div(class="col-lg-12 main-col")
             h2(class="mainTitle") All Workouts
 
             div(class="content-col" id="workoutResults")

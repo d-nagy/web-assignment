@@ -1,1 +1,50 @@
-[]
+[
+    {
+        "slug": "Legs-challenge",
+        "username": "doctorwhocomposer",
+        "count": 2,
+        "last_completed": 1549016446000
+    },
+    {
+        "slug": "Legs-challenge",
+        "username": "beast123",
+        "count": 3,
+        "last_completed": 1549012846000
+    },
+    {
+        "slug": "Legs-challenge",
+        "username": "admin",
+        "count": 2,
+        "last_completed": 	1548843700000
+    },
+    {
+        "slug": "Handstand-hold-workout",
+        "username": "doctorwhocomposer",
+        "count": 1,
+        "last_completed": 1548840100000
+    },
+    {
+        "slug": "Handstand-hold-workout",
+        "username": "beast123",
+        "count": 2,
+        "last_completed": 1548840100000
+    },
+    {
+        "slug": "Handstand-hold-workout",
+        "username": "admin",
+        "count": 4,
+        "last_completed": 1549016446000
+    },
+    {
+        "slug": "Legs-challenge",
+        "username": "treasurer",
+        "count": 1,
+        "last_completed": 1548930046000
+    },
+    {
+        "slug": "Legs-challenge",
+        "username": "tux",
+        "count": 1,
+        "last_completed": 1548411646000
+    }
+]

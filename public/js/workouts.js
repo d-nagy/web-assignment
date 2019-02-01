@@ -429,7 +429,7 @@ function fetchMostRecentWorkout() {
     }).done(function(data, textStatus, jqXHR) {
         $('#noRecent').nextAll().remove();
         $('#recentCompleted span').html('');
-        $('#recentCompleted span').html(data.workout.time_since);
+        $('#recentCompleted span').html(data.workout.time_since + ' ago');
         if (data.workout.slug) {
             $wkCard = createWorkoutCard('recent', data.workout, data.exercises);
             $('#mostRecent').append($wkCard);

@@ -1,27 +1,85 @@
 [
-    { "title": "Handstand hold workout",
+    { 
+        "title": "Handstand hold workout",
         "description": "",
         "author": "Tim Smith",
         "routine":
-         [ { "type": "exercise-single",
+         [
+           { 
+             "type": "exercise-single",
              "slug": "handstand-hold",
              "quantity": "60",
-             "units": "seconds" },
-           { "type": "rest", "duration": "60" },
-           { "type": "exercise-single",
+             "units": "seconds" 
+           },
+           { 
+             "type": "rest", "duration": "60" 
+           },
+           { 
+             "type": "exercise-single",
              "slug": "handstand-hold",
              "quantity": "45",
-             "units": "seconds" },
-           { "type": "rest", "duration": "45" },
-           { "type": "exercise-single",
+             "units": "seconds" 
+           },
+           { 
+             "type": "rest", "duration": "45"
+           },
+           { 
+             "type": "exercise-single",
              "slug": "handstand-hold",
              "quantity": "30",
-             "units": "seconds" },
-           { "type": "rest", "duration": "30" },
-           { "type": "exercise-single",
+             "units": "seconds"
+           },
+           { 
+             "type": "rest", "duration": "30"
+           },
+           { 
+             "type": "exercise-single",
              "slug": "handstand-hold",
              "quantity": "15",
-             "units": "seconds" } ],
+             "units": "seconds"
+           } 
+        ],
         "slug": "Handstand-hold-workout",
-        "favourites": 0 }
+        "favourites": 2
+    },
+    { 
+      "title": "Legs challenge",
+      "description": "Start with 40 each (for plyo-lunges do 20 each leg), then repeat with 30, 20, 10 and 5.",
+      "author": "Tim Smith",
+      "routine":
+       [
+         { 
+           "type": "exercise-single",
+           "slug": "Plyo-lunge",
+           "quantity": "20",
+           "units": "reps" 
+         },
+         { 
+           "type": "exercise-single",
+           "slug": "Jump-squat",
+           "quantity": "40",
+           "units": "reps" 
+         },
+         { 
+           "type": "exercise-single",
+           "slug": "Glute-bridge",
+           "quantity": "40",
+           "units": "reps"
+         },
+         { 
+           "type": "exercise-single",
+           "slug": "Wall-sit",
+           "quantity": "40",
+           "units": "seconds"
+         },
+         { 
+          "type": "exercise-single",
+          "slug": "Skater-jumps",
+          "quantity": "40",
+          "units": "reps"
+        }
+      ],
+      "slug": "Legs-challenge",
+      "favourites": 4
+    }
 ]

@@ -4,9 +4,8 @@ include mixins.pug
 
 block sub_content
     div(class="row" id="exercises")
-        div(class="col-lg-6 main-col")
+        div(class="col-lg-8 main-col")
             h2(class="mainTitle") Add Exercise
-            //- input(name='tags' class='some_class_name' placeholder='write some tags' value='css, html, javascript, css' autofocus data-blacklist='.NET,PHP')
             
             div(class="content-col")
                 form(action="/exercise" method="POST" id="addExerciseForm" class="needs-validation custom-form" novalidate)
@@ -53,7 +52,8 @@ block sub_content
 
                     button(type="submit" class="btn btn-lg btn-block custom-submit") Submit
 
-        div(class="col-lg-6 main-col")
+    div(class="row")
+        div(class="col-lg-12 main-col")
             h2(class="mainTitle") All Exercises
 
             div(class="content-col" id="exerciseResults")

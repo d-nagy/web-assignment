@@ -4,5 +4,71 @@
         "name": "Handstand hold",
         "description": "Perform a freestanding handstand hold for the required time.",
         "difficulty": "4"
+    },
+    {
+        "slug": "Regular-pushup",
+        "name": "Regular pushup",
+        "description": "Basic pushup: arms roughly shoulder width apart, let the elbows bend close to the body.",
+        "difficulty": "2"
+    },
+    {
+        "slug": "Pull-up",
+        "name": "Pull up",
+        "description": "From a still hang, pull with bent arms to raise chin over the bar/rings.",
+        "difficulty": "3"
+    },
+    {
+        "slug": "Plyo-lunge",
+        "name": "Plyo lunge",
+        "description": "Jump into lunges on alternating legs, allowing your back knee to go as low as possible. One rep is a lunge on both legs.",
+        "difficulty": "3"
+    },
+    {
+        "slug": "handstand-hold",
+        "name": "Handstand hold",
+        "description": "Perform a freestanding handstand hold for the required time.",
+        "difficulty": "4"
+    },
+    {
+        "slug": "Jump-squat",
+        "name": "Jump squat",
+        "description": "A regular bodyweight squat with a jump at the top.",
+        "difficulty": "3"
+    },
+    {
+        "slug": "Glute-bridge",
+        "name": "Glute bridge",
+        "description": "Start lying on your back with your knees bent, feet flat on ground. Raise your hips, keeping your feet and shoulders on the floor.",
+        "difficulty": "2"
+    },
+    {
+        "slug": "Wall-sit",
+        "name": "Wall sit",
+        "description": "'Sit' leaning against a wall with legs bent at 90 degrees.",
+        "difficulty": "4"
+    },
+    {
+        "slug": "Skater-jumps",
+        "name": "Skater jumps",
+        "description": "Jump to the side, landing low on one leg, then jump the other way. Stay as low to the ground as possible.",
+        "difficulty": "4"
+    },
+    {
+        "slug": "C-crunch",
+        "name": "C-crunch",
+        "description": "Crunches with legs in table-top position: raised, bent at 90 degrees so that shins are parallel to the ground.",
+        "difficulty": "1"
+    },
+    {
+        "slug": "Leg-raise",
+        "name": "Leg raise",
+        "description": "Lying on your back with straight legs, raise them to vertical and lower back down.",
+        "difficulty": "3"
+    },
+    {
+        "slug": "V-sit-crunch",
+        "name": "V-sit crunch",
+        "description": "Start lying on your back with legs straight and arms straight by your ears. Raise your legs and torso at the same time, bending at the hips, to reach a V-sit position.",
+        "difficulty": "4"
     }
 ]

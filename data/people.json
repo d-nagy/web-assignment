@@ -10,6 +10,36 @@
         "daily_completed": 2
     },
     {
+        "username": "tux",
+        "forename": "Mark",
+        "surname": "Lowes",
+        "password": "$2a$10$mF065EOH.jmsagWPpTp6YuKAESsLLuEwHgsamGCyY/XSESGb91hfS",
+        "admin": false,
+        "level": 0,
+        "wk_completed": 1,
+        "daily_completed": 0
+    },
+    {
+        "username": "beast123",
+        "forename": "Jim",
+        "surname": "Jameson",
+        "password": "$2a$10$mF065EOH.jmsagWPpTp6YuKAESsLLuEwHgsamGCyY/XSESGb91hfS",
+        "admin": false,
+        "level": 0,
+        "wk_completed": 5,
+        "daily_completed": 5
+    },
+    {
+        "username": "steveo",
+        "forename": "Sarah",
+        "surname": "May",
+        "password": "$2a$10$mF065EOH.jmsagWPpTp6YuKAESsLLuEwHgsamGCyY/XSESGb91hfS",
+        "admin": false,
+        "level": 0,
+        "wk_completed": 3,
+        "daily_completed": 1
+    },
+    {
         "username": "admin",
         "forename": "Tim",
         "surname": "Smith",
@@ -20,5 +50,29 @@
         "wk_created": 4,
         "wk_completed": 6,
         "daily_completed": 5
+    },
+    {
+        "username": "treasurer",
+        "forename": "Matthew",
+        "surname": "Johnson",
+        "password": "$2a$10$WOGEK3fWar907Ph/TdMHee2IPNydnokrQ7YgM3rx1CknDoYshSpe2",
+        "admin": true,
+        "level": 1,
+        "role": "Treasurer",
+        "wk_created": 2,
+        "wk_completed": 1,
+        "daily_completed": 0
+    },
+    {
+        "username": "pubOfficer",
+        "forename": "Kate",
+        "surname": "Doe",
+        "password": "$2a$10$WOGEK3fWar907Ph/TdMHee2IPNydnokrQ7YgM3rx1CknDoYshSpe2",
+        "admin": true,
+        "level": 1,
+        "role": "Publicity Officer",
+        "wk_created": 0,
+        "wk_completed": 4,
+        "daily_completed": 2
     }
 ]
