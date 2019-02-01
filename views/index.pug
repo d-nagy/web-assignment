@@ -122,5 +122,9 @@ block scripts
             $('#navLocation').html('Profile');
             $('#sidebar').removeClass('active');
             $('.overlay').removeClass('active');
+            fetchWorkouts(populateWorkoutResults);
+            populateProfileStats();
+            fetchMostRecentWorkout();
+            fetchMostCompletedWorkout();
         });
 

@@ -69,7 +69,10 @@ function completeWorkout(slug) {
     }).done(function(data, textStatus, jqXHR) {
         fetchWorkouts(populateWorkoutResults);
         fetchMostRecentWorkout();
-        fetchMostCompletedWorkout()
+        fetchMostCompletedWorkout();
+        if ($('#profileLink').parent().hasClass('active')) {
+            populateProfileStats();
+        }
     }).fail(function(jqXHR, textStatus, err) {
 
     });
@@ -428,7 +431,6 @@ function fetchMostRecentWorkout() {
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR) {
         $('#noRecent').nextAll().remove();
-        $('#recentCompleted span').html('');
         $('#recentCompleted span').html(data.workout.time_since + ' ago');
         if (data.workout.slug) {
             $wkCard = createWorkoutCard('recent', data.workout, data.exercises);

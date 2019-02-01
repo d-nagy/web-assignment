@@ -19,8 +19,8 @@ function populateProfileStats() {
         url: '/people/self/get',
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR) {
-        $('#totalCompleted').append(data.wk_completed);
-        $('#dailyCompleted').append(data.daily_completed);
+        $('#totalCompleted span').html(data.wk_completed);
+        $('#dailyCompleted span').html(data.daily_completed);
     }).fail(function(jqXHR, textStatus, err) {
         
     });
