@@ -176,7 +176,7 @@ router.get('/complete', (req, res) => {
     Workout.getMostCompletedWorkout(req.user.username, (err, status, result) => {
         if (!err) {
             let data = {};
-            
+
             if (result.complete_count > 0) {
                 Favourite.getFavourite(result.slug, req.user.username, (err, status, favourite) => {
                     if (!err) {

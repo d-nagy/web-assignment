@@ -34,7 +34,7 @@ const addPerson = (data, done) => {
             data.admin = false;
             data.level = 0;
             data.wk_completed = 0;
-            data.streak = 0;
+            data.daily_completed = 0;
             people.push(data);
             return done(null, 200);
         } else {
