@@ -40,7 +40,8 @@
            } 
         ],
         "slug": "Handstand-hold-workout",
-        "favourites": 2
+        "favourites": 2,
+        "wotd": true
     },
     { 
       "title": "Legs challenge",
