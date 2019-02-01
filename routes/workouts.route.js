@@ -3,32 +3,51 @@ const express = require('express');
 const Workout = require('../models/workout.model');
 const Exercise = require('../models/exercise.model');
 const Favourite = require('../models/favourite.model');
+const CompletedWorkout = require('../models/completed_workout.model');
 
 const router = express.Router();
 
 
-router.get('/', (req, res) => {
-    let workouts = Workout.getWorkouts();
-    let Favourites = Favourite.getFavouritesByUsername(req.user.username);
-    let favourites = Favourite.getFavouritesByUsername(req.user.username);
+function isToday(date) {
+    let today = new Date();
+    return date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate();
+}
 
-    let workoutsWithFavourites = []
+function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000);
 
-    workouts.forEach(workout => {
-        let hasFavourite = Favourites.find(r => r.slug === workout.slug);
+    var interval = Math.floor(seconds / 31536000);
+    if (interval > 1) {
+        return interval + " years";
+    }
 
-        let workoutWithFavourites = Object.keys(workout).reduce((object, key) => {
-            object[key] = workout[key];
-            return object;
-        }, {});
-        
-        if (hasFavourite) {
-            workoutWithFavourites.favourite = true;
-        }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + " months";
+    }
 
-        workoutsWithFavourites.push(workoutWithFavourites);
-    });
-    
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + " days";
+    }
+
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + " hours";
+    }
+
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + " minutes";
+    }
+
+    return Math.floor(seconds) + " seconds";
+};
+
+
+function getExercisesForWorkouts(workouts) {
     let lookup = {};
     let exercises = []
 
@@ -58,12 +77,136 @@ router.get('/', (req, res) => {
         }
     }
 
+    return exercises;
+}
+
+
+function addWorkoutStats(workouts, favourites, completedWorkouts) {
+    let workoutsWithStats = []
+
+    workouts.forEach(workout => {
+        let hasFavourite = favourites.find(r => r.slug === workout.slug);
+        let hasBeenCompleted = completedWorkouts.find(c => c.slug === workout.slug);
+
+        let workoutWithStats = Object.keys(workout).reduce((object, key) => {
+            object[key] = workout[key];
+            return object;
+        }, {});
+        
+        if (hasFavourite) {
+            workoutWithStats.favourite = true;
+        }
+
+        if (hasBeenCompleted) {
+            workoutWithStats.complete_count = hasBeenCompleted.count;
+            
+            let can_complete = !isToday(new Date(hasBeenCompleted.last_completed));
+            workoutWithStats.can_complete = can_complete;
+        } else {
+            workoutWithStats.complete_count = 0;
+            workoutWithStats.can_complete = true;
+        }
+
+        workoutsWithStats.push(workoutWithStats);
+    });
+
+    return workoutsWithStats;
+}
+
+
+router.get('/', (req, res) => {
+    let workouts = Workout.getWorkouts();
+    let favourites = Favourite.getFavouritesByUsername(req.user.username);
+    let completedWorkouts = CompletedWorkout.getCompletedWorkoutsByUsername(req.user.username);
+
+    let workoutsWithStats = addWorkoutStats(workouts, favourites, completedWorkouts);
+    let exercises = getExercisesForWorkouts(workouts);
+
     let data = {
-        workouts: workoutsWithFavourites,
+        workouts: workoutsWithStats,
         exercises: exercises
     }
 
     res.status(200).json(data);
+});
+
+
+router.get('/recent', (req, res) => {
+    Workout.getMostRecentWorkout(req.user.username, (err, status, result) => {
+        if (!err) {
+            let data = {};
+            let time_since = 'Never';
+            
+            if (result.last_completed > 0) {
+                time_since = timeSince(new Date(result.last_completed));
+                
+                Favourite.getFavourite(result.slug, req.user.username, (err, status, favourite) => {
+                    if (!err) {
+                        result.favourite = true;
+                    } else {
+                        result.favourite = false;
+                    }
+                });
+
+                CompletedWorkout.getCompletedWorkout(result.slug, req.user.username, (err, status, completed) => {
+                    if (!err) {
+                        result.complete_count = completed.count;
+                        result.can_complete = !isToday(new Date(completed.last_completed));
+                    } else {
+                        return res.status(status).send(err.message);
+                    }
+                });
+
+                let exercises = getExercisesForWorkouts([result]);
+                data.exercises = exercises;
+            }
+            result.time_since = time_since;
+
+            data.workout = result;
+
+            res.status(status).json(data);
+        } else {
+            res.status(status).send(err.message);
+        }
+    });
+});
+
+
+router.get('/complete', (req, res) => {
+    Workout.getMostCompletedWorkout(req.user.username, (err, status, result) => {
+        if (!err) {
+            let data = {};
+            
+            if (result.complete_count > 0) {
+                Favourite.getFavourite(result.slug, req.user.username, (err, status, favourite) => {
+                    if (!err) {
+                        result.favourite = true;
+                    } else {
+                        result.favourite = false;
+                    }
+                });
+
+                CompletedWorkout.getCompletedWorkout(result.slug, req.user.username, (err, status, completed) => {
+                    if (!err) {
+                        result.complete_count = completed.count;
+                        result.can_complete = !isToday(new Date(completed.last_completed));
+                    } else {
+                        return res.status(status).send(err.message);
+                    }
+                });
+
+                let exercises = getExercisesForWorkouts([result]);
+
+                data.exercises = exercises;
+            }
+
+            data.workout = result;
+
+            res.status(status).json(data);
+        } else {
+            res.status(status).send(err.message);
+        }
+    });
 });
 
 
@@ -99,6 +242,16 @@ router.put('/wotd', (req, res) => {
 
 router.put('/setfav', (req, res) => {
     Workout.setFavourite(req.body.slug, req.user.username, req.body.favourite, (err, status) => {
+        if (err) {
+            res.status(status).send(err.message);
+        }
+        res.status(status).send();
+    });
+});
+
+
+router.put('/complete', (req, res) => {
+    Workout.completeWorkout(req.body.slug, req.user.username, (err, status) => {
         if (err) {
             res.status(status).send(err.message);
         }

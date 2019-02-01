@@ -5,6 +5,7 @@ let workouts = require('../data/workouts.json');
 
 let Person = require('../models/person.model');
 let Favourite = require('../models/favourite.model');
+let CompletedWorkout = require('../models/completed_workout.model');
 
 
 
@@ -30,6 +31,55 @@ const getWorkoutOfTheDay = (done) => {
     let error = new Error('No workout of the day set');
     error.name = 'noWotd';
     return done(error, 404);
+};
+
+
+const getMostRecentWorkout = (username, done) => {
+    let completed = CompletedWorkout.getCompletedWorkoutsByUsername(username);
+
+    if (completed.length > 0) {
+        let recent = Math.max.apply(Math, completed.map(c => c.last_completed));
+        let mostRecentSlug = completed.find(c => c.last_completed === recent).slug;
+        
+        getWorkout(mostRecentSlug, (err, status, result) => {
+            if (!err) {
+                let workoutWithTime = Object.keys(result).reduce((object, key) => {
+                    object[key] = result[key];
+                    return object;
+                }, {});
+                workoutWithTime.last_completed = recent;
+                return done(null, 200, workoutWithTime);
+            }
+            return done(err, status);
+        });
+    } else {
+        return done(null, 200, { last_completed: -1 });
+    }
+};
+
+
+const getMostCompletedWorkout = (username, done) => {
+    let completed = CompletedWorkout.getCompletedWorkoutsByUsername(username);
+
+    if (completed.length > 0) {
+        let count = Math.max.apply(Math, completed.map(c => c.count));
+        let mostCompletedSlug = completed.find(c => c.count === count).slug;
+        
+        getWorkout(mostCompletedSlug, (err, status, result) => {
+            if (!err) {
+                let workoutWithCount = Object.keys(result).reduce((object, key) => {
+                    object[key] = result[key];
+                    return object;
+                }, {});
+                workoutWithCount.complete_count = count;
+                return done(null, 200, workoutWithCount);
+            }
+            return done(err, status);
+        });
+
+    } else {
+        return done(null, 200, { complete_count: 0 });
+    }
 };
 
 
@@ -117,12 +167,37 @@ const setFavourite = (slug, username, favourite, done) => {
 };
 
 
+const completeWorkout = (slug, username, done) => {
+    getWorkout(slug, (err, status, workout) => {
+        if (!err) {
+            Person.getPerson(username, (err, status, person) => {
+                if (!err) {
+                    person.wk_completed += 1;
+                    if (workout.wotd) {
+                        person.daily_completed += 1;
+                    }
+
+                    CompletedWorkout.addCompletedWorkout(slug, username, (err, status) => {
+                        return done(err, status);
+                    });
+                }
+                return done(err, status);
+            });
+        }
+        return done(err, status);
+    });
+};
+
+
 module.exports = {
     getWorkouts,
     getWorkout,
+    getMostRecentWorkout,
+    getMostCompletedWorkout,
     addWorkout,
     getWorkoutOfTheDay,
     setWorkoutOfTheDay,
     setFavourite,
+    completeWorkout,
     deleteWorkout
 };

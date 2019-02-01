@@ -7,11 +7,11 @@ block vars
 
 block sidebar-menu
         ul(class="list-unstyled components")
-            p #{user.username}
+            p #{user.forename + ' ' + user.surname}
             li
                 a(href="/" id="homeLink") Home
             li
-                a(href="/" id="profileLink") Profile
+                a(href="#" id="profileLink") Profile
 
         if (user.level > 0)
             ul(class="list-unstyled components")
@@ -24,30 +24,71 @@ block sidebar-menu
                     a(href="/admin/member" id="memberLink") Members
     
 
-block content
-    div(class="jumbotron text-center border-bottom")
-        h1(class="display-4") Durham University Calisthenics
-        p(class="lead")
-            span(style="font-family: monospace; font-size: 1.4em") cal-is-then-ics
-            .
-                : from Greek <i>kallos</i> ‘beauty’ + <i>sthenos</i> ‘strength’
-        p Bodyweight training for strength, skill and mobility
+block main-body
+    div(class="container" id="mainBodyHome")
+        div(class="jumbotron text-center border-bottom home")
+            h1(class="display-4") Durham University Calisthenics
+            p(class="lead")
+                span(style="font-family: monospace; font-size: 1.4em") cal-is-then-ics
+                .
+                    : from Greek <i>kallos</i> ‘beauty’ + <i>sthenos</i> ‘strength’
+            p Bodyweight training for strength, skill and mobility
 
-    div(class="row" id="#wotdRow")
-        iv(class="col-lg-12 main-col")
-            h2(class="mainTitle") Workout of the Day
-            div(class="content-col" id="workoutOfTheDay")
+        div(class="row home" id="#wotdRow" hidden)
+            div(class="col-lg-12 main-col")
+                h2(class="mainTitle") Workout of the Day
+                div(class="content-col" id="workoutOfTheDay")
+                    div(class="alert alert-success" id="wotdComplete") Workout of the Day complete!
 
-    div(class="row")
-        div(class="col-lg-6 main-col")
-            h2(class="mainTitle") Workouts
-            div(class="content-col" id="workoutResults")
-                h2(id="noWorkouts" style="display:none") No workouts
-        
-        div(class="col-lg-6 main-col")
-            h2(class="mainTitle") Exercises
-            div(class="content-col" id="exerciseResults")
-                h2(id="noExercises" style="display:none") No exercises
+        div(class="row home")
+            div(class="col-lg-6 main-col")
+                h2(class="mainTitle") Workouts
+                div(class="content-col")
+                    div(class="scrollable" id="workoutResults")
+                        h2(id="noWorkouts" style="display:none") No workouts
+                    
+            
+            div(class="col-lg-6 main-col")
+                h2(class="mainTitle") Exercises
+                div(class="content-col")
+                    div(class="scrollable" id="exerciseResults")
+                        h2(id="noExercises" style="display:none") No exercises
+
+
+    div(class="container" id="mainBodyProfile" style="display:none")
+        div(class="jumbotron border-bottom profile")
+            h1(class="display-4") #{user.forename + ' ' + user.surname}
+            div(class="row")
+                h2(class="col-md-4" id="totalCompleted")
+                    small(class="text-muted") Total workouts completed
+                    span
+
+                h2(class="col-md-4" id="dailyCompleted")
+                    small(class="text-muted") Daily workouts completed
+                    span
+
+                h2(class="col-md-4" id="recentCompleted")
+                    small(class="text-muted") Last workout completed
+                    span
+
+
+        div(class="row profile")
+            div(class="col-lg-6 main-col")
+                h2(class="mainTitle") Most completed workout
+                div(class="content-col" id="mostCompleted")
+                    h2(id="noCompleted" style="display:none") No workouts completed yet!
+            
+            div(class="col-lg-6 main-col")
+                h2(class="mainTitle") Most recent workout
+                div(class="content-col" id="mostRecent")
+                    h2(id="noRecent" style="display:none") No workouts completed yet!
+
+        div(class="row profile")
+            div(class="col-lg-12 main-col")
+                h2(class="mainTitle") Uncompleted workouts
+                div(class="content-col" id="uncompletedResults")
+                    h2(id="noUncompleted" style="display:none") You have completed all of the workouts!
+
 
 
     +exercise-card(false)(id="ex-card-template", style="display:none")
@@ -62,10 +103,24 @@ block scripts
     script(src="js/workouts.js")
     script(src="js/exercises.js")
     script(src="js/starRating.js")
+    script(src="js/members.js")
 
     script.
         $('#navLocation').html('Home');
         $('#homeLink').parent().addClass('active');
         fetchExercises(populateExerciseResults);
         fetchWorkouts(populateWorkoutResults);
+        populateProfileStats();
+        fetchMostRecentWorkout();
+        fetchMostCompletedWorkout();
+
+        $('#profileLink').click(function(e) {
+            $('#mainBodyHome').hide();
+            $('#mainBodyProfile').show();
+            $(this).parent().addClass('active');
+            $('#homeLink').parent().removeClass('active');
+            $('#navLocation').html('Profile');
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
 

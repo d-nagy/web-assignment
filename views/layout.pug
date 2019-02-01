@@ -16,7 +16,7 @@ html
             
             block sidebar-menu
                 ul(class="list-unstyled components")
-                    p #{user.username}
+                    p #{user.forename + ' ' + user.surname}
                     li(class="active")
                         a(href="/" id="homeLink") Home
                     li
@@ -32,8 +32,9 @@ html
                         i(class="fas fa-bars")
                     p(class="lead" id="navLocation")
 
-        div(class="container" id="mainBody")
-            block content
+        block main-body
+            div(class="container" id="mainBody")
+                block content
         
         include footer.pug
 

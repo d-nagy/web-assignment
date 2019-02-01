@@ -24,6 +24,23 @@ router.get('/', (req, res) => {
     res.send(peopleNoPasswords);
 });
 
+router.get('/self/get', (req, res) => {
+    Person.getPerson(req.user.username, (err, status, result) => {
+        if (err) {
+            res.status(status).send(err.message);
+        } else {
+            let personNoPassword = Object.keys(result).reduce((object, key) => {
+                if (key !== 'password') {
+                    object[key] = result[key];
+                }
+                return object;
+            }, {});
+            res.contentType('application/json');
+            res.status(status).send(personNoPassword);
+        }
+    });
+});
+
 router.get('/:username', (req, res) => {
     Person.getPerson(req.params.username, (err, status, result) => {
         if (err) {

@@ -8,11 +8,11 @@ block head
 
 block sidebar-menu
     ul(class="list-unstyled components")
-        p #{user.username}
+        p #{user.forename + ' ' + user.surname}
         li
             a(href="/" id="homeLink") Home
         li
-            a(href="/" id="profileLink") Profile
+            a(href="#" id="profileLink") Profile
 
     ul(class="list-unstyled components")
         p Admin Panel
