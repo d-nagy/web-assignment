@@ -12,11 +12,11 @@ const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    if (req.isAuthenticated()) {
-        return res.render('index');
-    } else {
-        return res.redirect('/login');
-    }
+  if (req.isAuthenticated()) {
+    return res.render('index');
+  } else {
+    return res.redirect('/login');
+  }
 });
 
 router.use('/', auth);
